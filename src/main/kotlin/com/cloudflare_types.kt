@@ -6,9 +6,17 @@
 package com.cloudflare.workers.types
 
 import org.khronos.webgl.ArrayBuffer
+import org.khronos.webgl.ArrayBufferView
+import org.khronos.webgl.Uint8Array
+import org.w3c.dom.events.EventTarget
+import org.w3c.fetch.*
+import org.w3c.workers.ServiceWorkerGlobalScope
 import kotlin.js.Date
 import kotlin.js.Promise
 
+external interface Record<K, V> {
+    operator fun get(key: K): V?
+}
 
 /*! *****************************************************************************
 Copyright (c) Cloudflare. All rights reserved.
@@ -27,57 +35,57 @@ and limitations under the License.
 /* eslint-disable */
 // noinspection JSUnusedGlobalSymbols
 
-external class DOMException : Error {
-    constructor (message: String = definedExternally, name: String = definedExternally)
-
-    override val message: String
-    val name: String
-    val code: Double
-    val stack: Any?
-
-    companion object {
-        val INDEX_SIZE_ERR: Double
-        val DOMSTRING_SIZE_ERR: Double
-        val HIERARCHY_REQUEST_ERR: Double
-        val WRONG_DOCUMENT_ERR: Double
-        val INVALID_CHARACTER_ERR: Double
-        val NO_DATA_ALLOWED_ERR: Double
-        val NO_MODIFICATION_ALLOWED_ERR: Double
-        val NOT_FOUND_ERR: Double
-        val NOT_SUPPORTED_ERR: Double
-        val INUSE_ATTRIBUTE_ERR: Double
-        val INVALID_STATE_ERR: Double
-        val SYNTAX_ERR: Double
-        val INVALID_MODIFICATION_ERR: Double
-        val NAMESPACE_ERR: Double
-        val INVALID_ACCESS_ERR: Double
-        val VALIDATION_ERR: Double
-        val TYPE_MISMATCH_ERR: Double
-        val SECURITY_ERR: Double
-        val NETWORK_ERR: Double
-        val ABORT_ERR: Double
-        val URL_MISMATCH_ERR: Double
-        val QUOTA_EXCEEDED_ERR: Double
-        val TIMEOUT_ERR: Double
-        val INVALID_NODE_TYPE_ERR: Double
-        val DATA_CLONE_ERR: Double
-    }
-
-}
+//external class DOMException : Error {
+//    constructor (message: String = definedExternally, name: String = definedExternally)
+//
+//    override val message: String
+//    val name: String
+//    val code: Double
+//    val stack: Any?
+//
+//    companion object {
+//        val INDEX_SIZE_ERR: Double
+//        val DOMSTRING_SIZE_ERR: Double
+//        val HIERARCHY_REQUEST_ERR: Double
+//        val WRONG_DOCUMENT_ERR: Double
+//        val INVALID_CHARACTER_ERR: Double
+//        val NO_DATA_ALLOWED_ERR: Double
+//        val NO_MODIFICATION_ALLOWED_ERR: Double
+//        val NOT_FOUND_ERR: Double
+//        val NOT_SUPPORTED_ERR: Double
+//        val INUSE_ATTRIBUTE_ERR: Double
+//        val INVALID_STATE_ERR: Double
+//        val SYNTAX_ERR: Double
+//        val INVALID_MODIFICATION_ERR: Double
+//        val NAMESPACE_ERR: Double
+//        val INVALID_ACCESS_ERR: Double
+//        val VALIDATION_ERR: Double
+//        val TYPE_MISMATCH_ERR: Double
+//        val SECURITY_ERR: Double
+//        val NETWORK_ERR: Double
+//        val ABORT_ERR: Double
+//        val URL_MISMATCH_ERR: Double
+//        val QUOTA_EXCEEDED_ERR: Double
+//        val TIMEOUT_ERR: Double
+//        val INVALID_NODE_TYPE_ERR: Double
+//        val DATA_CLONE_ERR: Double
+//    }
+//
+//}
 
 
 external interface WorkerGlobalScopeEventMap {
     var fetch: FetchEvent
     var scheduled: ScheduledEvent
-    var queue: QueueEvent
+    //    var queue: QueueEvent
     var unhandledrejection: PromiseRejectionEvent
     var rejectionhandled: PromiseRejectionEvent
 }
 
 
-open external class WorkerGlobalScope : EventTarget<WorkerGlobalScopeEventMap> {
-    var EventTarget: Any?
-}
+//external abstract class  WorkerGlobalScope : EventTarget<WorkerGlobalScopeEventMap> {
+//    var EventTarget: Any?
+//}
 
 
 external interface Console {
@@ -109,259 +117,259 @@ external val console: Console
 typealias BufferSource = Any /* ArrayBufferView | ArrayBuffer */
 
 
-external object WebAssembly {
-
-    external class CompileError : Error {
-        constructor (message: String = definedExternally)
-    }
-
-
-    external class RuntimeError : Error {
-        constructor (message: String = definedExternally)
-    }
-
-
-    @Suppress(
-        "NAME_CONTAINS_ILLEGAL_CHARS",
-        "NESTED_CLASS_IN_EXTERNAL_INTERFACE",
-    )
-    @JsName("""(/*union*/{anyfunc: 'anyfunc', externref: 'externref', f32: 'f32', f64: 'f64', i32: 'i32', i64: 'i64', v128: 'v128'}/*union*/)""")
-    sealed external interface ValueType {
-        companion object {
-            val anyfunc: ValueType
-            val externref: ValueType
-            val f32: ValueType
-            val f64: ValueType
-            val i32: ValueType
-            val i64: ValueType
-            val v128: ValueType
-        }
-    }
-
-
-    external interface GlobalDescriptor {
-        var value: ValueType
-        var mutable: Boolean?
-    }
-
-
-    external class Global {
-        constructor (descriptor: GlobalDescriptor, value: Any? = definedExternally)
-
-        var value: Any?
-        fun valueOf(): Any?
-    }
-
-    typealias ImportValue = Any /* ExportValue | number */
-    typealias ModuleImports = Record<String, ImportValue>
-    typealias Imports = Record<String, ModuleImports>
-    typealias ExportValue = Any /* Function | Global | Memory | Table */
-    typealias Exports = Record<String, ExportValue>
-
-    external class Instance {
-        constructor (module: Module, imports: Imports = definedExternally)
-
-        val exports: Exports
-    }
-
-
-    external interface MemoryDescriptor {
-        var initial: Double
-        var maximum: Double?
-        var shared: Boolean?
-    }
-
-
-    external class Memory {
-        constructor (descriptor: MemoryDescriptor)
-
-        val buffer: ArrayBuffer
-        fun grow(delta: Double): Double
-    }
-
-
-    @Suppress(
-        "NAME_CONTAINS_ILLEGAL_CHARS",
-        "NESTED_CLASS_IN_EXTERNAL_INTERFACE",
-    )
-    @JsName("""(/*union*/{function: 'function', global: 'global', memory: 'memory', table: 'table'}/*union*/)""")
-    sealed external interface ImportExportKind {
-        companion object {
-            val function: ImportExportKind
-            val global: ImportExportKind
-            val memory: ImportExportKind
-            val table: ImportExportKind
-        }
-    }
-
-
-    external interface ModuleExportDescriptor {
-        var kind: ImportExportKind
-        var name: String
-    }
-
-
-    external interface ModuleImportDescriptor {
-        var kind: ImportExportKind
-        var module: String
-        var name: String
-    }
-
-
-    external class Module {
-
-
-        companion object {
-            fun customSections(module: Module, sectionName: String): Array<ArrayBuffer>
-            fun exports(module: Module): Array<ModuleExportDescriptor>
-            fun imports(module: Module): Array<ModuleImportDescriptor>
-        }
-
-    }
-
-
-    @Suppress(
-        "NAME_CONTAINS_ILLEGAL_CHARS",
-        "NESTED_CLASS_IN_EXTERNAL_INTERFACE",
-    )
-    @JsName("""(/*union*/{anyfunc: 'anyfunc', externref: 'externref'}/*union*/)""")
-    sealed external interface TableKind {
-        companion object {
-            val anyfunc: TableKind
-            val externref: TableKind
-        }
-    }
-
-
-    external interface TableDescriptor {
-        var element: TableKind
-        var initial: Double
-        var maximum: Double?
-    }
-
-
-    external class Table {
-        constructor (descriptor: TableDescriptor, value: Any? = definedExternally)
-
-        val length: Double
-        fun get(index: Double): Any?
-        fun grow(delta: Double, value: Any? = definedExternally): Double
-        fun set(index: Double, value: Any? = definedExternally): Unit
-    }
-
-    external fun instantiate(module: Module, imports: Imports = definedExternally): Promise<Instance>
-    external fun validate(bytes: BufferSource): Boolean
-}
+//external object WebAssembly {
+//
+//    external class CompileError : Error {
+//        constructor (message: String = definedExternally)
+//    }
+//
+//
+//    external class RuntimeError : Error {
+//        constructor (message: String = definedExternally)
+//    }
+//
+//
+//    @Suppress(
+//        "NAME_CONTAINS_ILLEGAL_CHARS",
+//        "NESTED_CLASS_IN_EXTERNAL_INTERFACE",
+//    )
+//    @JsName("""(/*union*/{anyfunc: 'anyfunc', externref: 'externref', f32: 'f32', f64: 'f64', i32: 'i32', i64: 'i64', v128: 'v128'}/*union*/)""")
+//    sealed external interface ValueType {
+//        companion object {
+//            val anyfunc: ValueType
+//            val externref: ValueType
+//            val f32: ValueType
+//            val f64: ValueType
+//            val i32: ValueType
+//            val i64: ValueType
+//            val v128: ValueType
+//        }
+//    }
+//
+//
+//    external interface GlobalDescriptor {
+//        var value: ValueType
+//        var mutable: Boolean?
+//    }
+//
+//
+//    external class Global {
+//        constructor (descriptor: GlobalDescriptor, value: Any? = definedExternally)
+//
+//        var value: Any?
+//        fun valueOf(): Any?
+//    }
+//
+//    typealias ImportValue = Any /* ExportValue | number */
+//    typealias ModuleImports = Record<String, ImportValue>
+//    typealias Imports = Record<String, ModuleImports>
+//    typealias ExportValue = Any /* Function | Global | Memory | Table */
+//    typealias Exports = Record<String, ExportValue>
+//
+//    external class Instance {
+//        constructor (module: Module, imports: Imports = definedExternally)
+//
+//        val exports: Exports
+//    }
+//
+//
+//    external interface MemoryDescriptor {
+//        var initial: Double
+//        var maximum: Double?
+//        var shared: Boolean?
+//    }
+//
+//
+//    external class Memory {
+//        constructor (descriptor: MemoryDescriptor)
+//
+//        val buffer: ArrayBuffer
+//        fun grow(delta: Double): Double
+//    }
+//
+//
+//    @Suppress(
+//        "NAME_CONTAINS_ILLEGAL_CHARS",
+//        "NESTED_CLASS_IN_EXTERNAL_INTERFACE",
+//    )
+//    @JsName("""(/*union*/{function: 'function', global: 'global', memory: 'memory', table: 'table'}/*union*/)""")
+//    sealed external interface ImportExportKind {
+//        companion object {
+//            val function: ImportExportKind
+//            val global: ImportExportKind
+//            val memory: ImportExportKind
+//            val table: ImportExportKind
+//        }
+//    }
+//
+//
+//    external interface ModuleExportDescriptor {
+//        var kind: ImportExportKind
+//        var name: String
+//    }
+//
+//
+//    external interface ModuleImportDescriptor {
+//        var kind: ImportExportKind
+//        var module: String
+//        var name: String
+//    }
+//
+//
+//    external class Module {
+//
+//
+//        companion object {
+//            fun customSections(module: Module, sectionName: String): Array<ArrayBuffer>
+//            fun exports(module: Module): Array<ModuleExportDescriptor>
+//            fun imports(module: Module): Array<ModuleImportDescriptor>
+//        }
+//
+//    }
+//
+//
+//    @Suppress(
+//        "NAME_CONTAINS_ILLEGAL_CHARS",
+//        "NESTED_CLASS_IN_EXTERNAL_INTERFACE",
+//    )
+//    @JsName("""(/*union*/{anyfunc: 'anyfunc', externref: 'externref'}/*union*/)""")
+//    sealed external interface TableKind {
+//        companion object {
+//            val anyfunc: TableKind
+//            val externref: TableKind
+//        }
+//    }
+//
+//
+//    external interface TableDescriptor {
+//        var element: TableKind
+//        var initial: Double
+//        var maximum: Double?
+//    }
+//
+//
+//    external class Table {
+//        constructor (descriptor: TableDescriptor, value: Any? = definedExternally)
+//
+//        val length: Double
+//        fun get(index: Double): Any?
+//        fun grow(delta: Double, value: Any? = definedExternally): Double
+//        fun set(index: Double, value: Any? = definedExternally): Unit
+//    }
+//
+//    external fun instantiate(module: Module, imports: Imports = definedExternally): Promise<Instance>
+//    external fun validate(bytes: BufferSource): Boolean
+//}
 
 
 /** This ServiceWorker API interface represents the global execution context of a service worker. */
 
-external interface ServiceWorkerGlobalScope : WorkerGlobalScope {
-    var DOMException: Any?
-    var WorkerGlobalScope: Any?
-    fun btoa(data: String): String
-    fun atob(data: String): String
-    fun setTimeout(callback: Function<Any?> /* (...args: any[]) => void */, msDelay: Double = definedExternally): Double
-    fun <Args : Array<Any?>> setTimeout(
-        callback: Function<Any?> /* (...args: Args) => void */,
-        msDelay: Double = definedExternally,
-        vararg args: Any? /* Args */
-    ): Double
+//external interface ServiceWorkerGlobalScope : WorkerGlobalScope {
+//    var DOMException: Any?
+//    var WorkerGlobalScope: Any?
+//    fun btoa(data: String): String
+//    fun atob(data: String): String
+//    fun setTimeout(callback: Function<Any?> /* (...args: any[]) => void */, msDelay: Double = definedExternally): Double
+//    fun <Args : Array<Any?>> setTimeout(
+//        callback: Function<Any?> /* (...args: Args) => void */,
+//        msDelay: Double = definedExternally,
+//        vararg args: Any? /* Args */
+//    ): Double
+//
+//    fun clearTimeout(timeoutId: Double?): Unit
+//    fun setInterval(
+//        callback: Function<Any?> /* (...args: any[]) => void */,
+//        msDelay: Double = definedExternally
+//    ): Double
+//
+//    fun <Args : Array<Any?>> setInterval(
+//        callback: Function<Any?> /* (...args: Args) => void */,
+//        msDelay: Double = definedExternally,
+//        vararg args: Any? /* Args */
+//    ): Double
+//
+//    fun clearInterval(timeoutId: Double?): Unit
+//    fun queueMicrotask(task: Function): Unit
+//    fun <T> structuredClone(value: T, options: StructuredSerializeOptions = definedExternally): T
+//    fun fetch(input: RequestInfo, init: RequestInit<RequestInitCfProperties> = definedExternally): Promise<Response>
+//    var self: ServiceWorkerGlobalScope
+//    var crypto: Crypto
+//    var caches: CacheStorage
+//    var scheduler: Scheduler
+//    var performance: Performance
+//    val origin: String
+//    var Event: Any?
+//    var ExtendableEvent: Any?
+//    var PromiseRejectionEvent: Any?
+//    var FetchEvent: Any?
+//    var TailEvent: Any?
+//    var TraceEvent: Any?
+//    var ScheduledEvent: Any?
+//    var MessageEvent: Any?
+//    var CloseEvent: Any?
+//    var ReadableStreamDefaultReader: Any?
+//    var ReadableStreamBYOBReader: Any?
+////    var ReadableStream: Temp0
+//    var WritableStream: Any?
+//    var WritableStreamDefaultWriter: Any?
+//    var TransformStream: Any?
+//    var ByteLengthQueuingStrategy: Any?
+//    var CountQueuingStrategy: Any?
+//    var CompressionStream: Any?
+//    var DecompressionStream: Any?
+//    var TextEncoderStream: Any?
+//    var TextDecoderStream: Any?
+//    var Headers: Any?
+//    var Body: Any?
+//    var Request: Any?
+//    var Response: Any?
+//    var WebSocket: Any?
+//    var WebSocketPair:()->Pair<WebSocket,WebSocket> /* new () => { 0: WebSocket; 1: WebSocket; } */
+//    var WebSocketRequestResponsePair: Any?
+//    var AbortController: Any?
+//    var AbortSignal: Any?
+//    var TextDecoder: Any?
+//    var TextEncoder: Any?
+//    var URL: Any?
+//    var URLSearchParams: Any?
+//    var URLPattern: Any?
+//    var Blob: Any?
+//    var File: Any?
+//    var FormData: Any?
+//    var Crypto: Any?
+//    var SubtleCrypto: Any?
+//    var CryptoKey: Any?
+//    var CacheStorage: Any?
+//    var Cache: Any?
+//    var FixedLengthStream: Any?
+//    var IdentityTransformStream: Any?
+//    var HTMLRewriter: Any?
+//}
 
-    fun clearTimeout(timeoutId: Double?): Unit
-    fun setInterval(
-        callback: Function<Any?> /* (...args: any[]) => void */,
-        msDelay: Double = definedExternally
-    ): Double
-
-    fun <Args : Array<Any?>> setInterval(
-        callback: Function<Any?> /* (...args: Args) => void */,
-        msDelay: Double = definedExternally,
-        vararg args: Any? /* Args */
-    ): Double
-
-    fun clearInterval(timeoutId: Double?): Unit
-    fun queueMicrotask(task: Function): Unit
-    fun <T> structuredClone(value: T, options: StructuredSerializeOptions = definedExternally): T
-    fun fetch(input: RequestInfo, init: RequestInit<RequestInitCfProperties> = definedExternally): Promise<Response>
-    var self: ServiceWorkerGlobalScope
-    var crypto: Crypto
-    var caches: CacheStorage
-    var scheduler: Scheduler
-    var performance: Performance
-    val origin: String
-    var Event: Any?
-    var ExtendableEvent: Any?
-    var PromiseRejectionEvent: Any?
-    var FetchEvent: Any?
-    var TailEvent: Any?
-    var TraceEvent: Any?
-    var ScheduledEvent: Any?
-    var MessageEvent: Any?
-    var CloseEvent: Any?
-    var ReadableStreamDefaultReader: Any?
-    var ReadableStreamBYOBReader: Any?
-    var ReadableStream: Temp0
-    var WritableStream: Any?
-    var WritableStreamDefaultWriter: Any?
-    var TransformStream: Any?
-    var ByteLengthQueuingStrategy: Any?
-    var CountQueuingStrategy: Any?
-    var CompressionStream: Any?
-    var DecompressionStream: Any?
-    var TextEncoderStream: Any?
-    var TextDecoderStream: Any?
-    var Headers: Any?
-    var Body: Any?
-    var Request: Any?
-    var Response: Any?
-    var WebSocket: Any?
-    var WebSocketPair:()->Pair<WebSocket,WebSocket> /* new () => { 0: WebSocket; 1: WebSocket; } */
-    var WebSocketRequestResponsePair: Any?
-    var AbortController: Any?
-    var AbortSignal: Any?
-    var TextDecoder: Any?
-    var TextEncoder: Any?
-    var URL: Any?
-    var URLSearchParams: Any?
-    var URLPattern: Any?
-    var Blob: Any?
-    var File: Any?
-    var FormData: Any?
-    var Crypto: Any?
-    var SubtleCrypto: Any?
-    var CryptoKey: Any?
-    var CacheStorage: Any?
-    var Cache: Any?
-    var FixedLengthStream: Any?
-    var IdentityTransformStream: Any?
-    var HTMLRewriter: Any?
-}
-
-
-external fun <Type : /* keyof WorkerGlobalScopeEventMap */> addEventListener(
-    type: Type,
-    handler: EventListenerOrEventListenerObject<Any?>,
-    options: EventTargetAddEventListenerOptions = definedExternally
-): Unit
-
-external fun <Type : /* keyof WorkerGlobalScopeEventMap */> addEventListener(
-    type: Type,
-    handler: EventListenerOrEventListenerObject<Any?>,
-    options: Boolean = definedExternally
-): Unit
-
-external fun <Type : /* keyof WorkerGlobalScopeEventMap */> removeEventListener(
-    type: Type,
-    handler: EventListenerOrEventListenerObject<Any?>,
-    options: EventTargetEventListenerOptions = definedExternally
-): Unit
-
-external fun <Type : /* keyof WorkerGlobalScopeEventMap */> removeEventListener(
-    type: Type,
-    handler: EventListenerOrEventListenerObject<Any?>,
-    options: Boolean = definedExternally
-): Unit
+//
+//external fun <Type : /* keyof WorkerGlobalScopeEventMap */> addEventListener(
+//    type: Type,
+//    handler: EventListenerOrEventListenerObject<Any?>,
+//    options: EventTargetAddEventListenerOptions = definedExternally
+//): Unit
+//
+//external fun <Type : /* keyof WorkerGlobalScopeEventMap */> addEventListener(
+//    type: Type,
+//    handler: EventListenerOrEventListenerObject<Any?>,
+//    options: Boolean = definedExternally
+//): Unit
+//
+//external fun <Type : /* keyof WorkerGlobalScopeEventMap */> removeEventListener(
+//    type: Type,
+//    handler: EventListenerOrEventListenerObject<Any?>,
+//    options: EventTargetEventListenerOptions = definedExternally
+//): Unit
+//
+//external fun <Type : /* keyof WorkerGlobalScopeEventMap */> removeEventListener(
+//    type: Type,
+//    handler: EventListenerOrEventListenerObject<Any?>,
+//    options: Boolean = definedExternally
+//): Unit
 
 /** Dispatches a synthetic event event to target and returns true if either event's cancelable attribute value is false or its preventDefault() method was not invoked, and false otherwise. */
 external fun dispatchEvent(event: Any /* FetchEvent | ScheduledEvent | QueueEvent<unknown> | PromiseRejectionEvent */): Boolean
@@ -396,14 +404,10 @@ external fun <Args : Array<Any?>> setInterval(
 
 external fun clearInterval(timeoutId: Double?): Unit
 
-external fun queueMicrotask(task: Function): Unit
+//external fun queueMicrotask(task: Function): Unit
 
 external fun <T> structuredClone(value: T, options: StructuredSerializeOptions = definedExternally): T
 
-external fun fetch(
-    input: RequestInfo,
-    init: RequestInit<RequestInitCfProperties> = definedExternally
-): Promise<Response>
 
 external val self: ServiceWorkerGlobalScope
 
@@ -429,7 +433,7 @@ external interface ExecutionContext {
 }
 
 
-typealias ExportedHandlerFetchHandler<Env /* default is Any? */, CfHostMetadata /* default is Any? */> = (request: Request<CfHostMetadata, IncomingRequestCfProperties<CfHostMetadata>>, env: Env, ctx: ExecutionContext) -> Any /* Response | Promise<Response> */
+//typealias ExportedHandlerFetchHandler<Env /* default is Any? */, CfHostMetadata /* default is Any? */> = (request: Request<CfHostMetadata, IncomingRequestCfProperties<CfHostMetadata>>, env: Env, ctx: ExecutionContext) -> Any /* Response | Promise<Response> */
 
 typealias ExportedHandlerTailHandler<Env /* default is Any? */> = (events: Array<TraceItem>, env: Env, ctx: ExecutionContext) -> Any /* void | Promise<void> */
 
@@ -443,7 +447,7 @@ typealias ExportedHandlerTestHandler<Env /* default is Any? */> = (controller: T
 
 
 external interface ExportedHandler<Env /* default is Any? */, QueueHandlerMessage /* default is Any? */, CfHostMetadata /* default is Any? */> {
-    var fetch: ExportedHandlerFetchHandler<Env, CfHostMetadata>?
+//    var fetch: ExportedHandlerFetchHandler<Env, CfHostMetadata>?
     var tail: ExportedHandlerTailHandler<Env>?
     var trace: ExportedHandlerTraceHandler<Env>?
     var scheduled: ExportedHandlerScheduledHandler<Env>?
@@ -458,7 +462,7 @@ external interface StructuredSerializeOptions {
 }
 
 
-external class PromiseRejectionEvent : Event {
+abstract external class PromiseRejectionEvent : Event {
     val promise: Promise<Any?>
     val reason: Any?
 }
@@ -483,30 +487,30 @@ external interface DurableObject {
 }
 
 
-external interface DurableObjectStub : Fetcher {
-    val id: DurableObjectId
-    val name: String?
-}
+//external interface DurableObjectStub : Fetcher {
+//    val id: DurableObjectId
+//    val name: String?
+//}
+//
+//
+//external interface DurableObjectId {
+//    fun toString(): String
+//    fun equals(other: DurableObjectId): Boolean
+//    val name: String?
+//}
 
 
-external interface DurableObjectId {
-    fun toString(): String
-    fun equals(other: DurableObjectId): Boolean
-    val name: String?
-}
-
-
-external interface DurableObjectNamespace {
-    fun newUniqueId(options: DurableObjectNamespaceNewUniqueIdOptions = definedExternally): DurableObjectId
-    fun idFromName(name: String): DurableObjectId
-    fun idFromString(id: String): DurableObjectId
-    fun get(
-        id: DurableObjectId,
-        options: DurableObjectNamespaceGetDurableObjectOptions = definedExternally
-    ): DurableObjectStub
-
-    fun jurisdiction(jurisdiction: DurableObjectJurisdiction): DurableObjectNamespace
-}
+//external interface DurableObjectNamespace {
+//    fun newUniqueId(options: DurableObjectNamespaceNewUniqueIdOptions = definedExternally): DurableObjectId
+//    fun idFromName(name: String): DurableObjectId
+//    fun idFromString(id: String): DurableObjectId
+//    fun get(
+//        id: DurableObjectId,
+//        options: DurableObjectNamespaceGetDurableObjectOptions = definedExternally
+//    ): DurableObjectStub
+//
+//    fun jurisdiction(jurisdiction: DurableObjectJurisdiction): DurableObjectNamespace
+//}
 
 
 @Suppress(
@@ -554,7 +558,7 @@ external interface DurableObjectNamespaceGetDurableObjectOptions {
 
 external interface DurableObjectState {
     fun waitUntil(promise: Promise<Any?>): Unit
-    val id: DurableObjectId
+//    val id: DurableObjectId
     val storage: DurableObjectStorage
     fun <T> blockConcurrencyWhile(callback: () -> Promise<T>): Promise<T>
     fun acceptWebSocket(ws: WebSocket, tags: Array<String> = definedExternally): Unit
@@ -669,8 +673,8 @@ external interface AnalyticsEngineDataPoint {
 }
 
 
-open external class Event {
-    constructor (type: String, init: EventInit = definedExternally)
+external interface Event {
+//    constructor (type: String, init: EventInit = definedExternally)
 
     /** Returns the type of event, e.g. "click", "hashchange", or "submit". */
     val type: String
@@ -710,12 +714,12 @@ open external class Event {
     fun stopPropagation(): Unit
     fun composedPath(): Array<EventTarget>
 
-    companion object {
-        val NONE: Double
-        val CAPTURING_PHASE: Double
-        val AT_TARGET: Double
-        val BUBBLING_PHASE: Double
-    }
+//    companion object {
+//        val NONE: Double
+//        val CAPTURING_PHASE: Double
+//        val AT_TARGET: Double
+//        val BUBBLING_PHASE: Double
+//    }
 
 }
 
@@ -727,7 +731,7 @@ external interface EventInit {
 }
 
 
-typealias EventListener<EventType : Event /* default is Event */> = (event: EventType) -> Unit
+typealias EventListener = (event: Event) -> Unit
 
 
 external interface EventListenerObject<EventType : Event /* default is Event */> {
@@ -735,38 +739,38 @@ external interface EventListenerObject<EventType : Event /* default is Event */>
 }
 
 
-typealias EventListenerOrEventListenerObject<EventType : Event /* default is Event */> = Any /* EventListener<EventType> | EventListenerObject<EventType> */
+//typealias EventListenerOrEventListenerObject<EventType : Event /* default is Event */> = Any /* EventListener<EventType> | EventListenerObject<EventType> */
 
 
-open external class EventTarget<EventMap : Record<String, Event> /* default is Record<String, Event> */> {
-    constructor ()
-
-    fun <Type : /* keyof EventMap */> addEventListener(
-        type: Type,
-        handler: EventListenerOrEventListenerObject<Any?>,
-        options: EventTargetAddEventListenerOptions = definedExternally
-    ): Unit
-
-    fun <Type : /* keyof EventMap */> addEventListener(
-        type: Type,
-        handler: EventListenerOrEventListenerObject<Any?>,
-        options: Boolean = definedExternally
-    ): Unit
-
-    fun <Type : /* keyof EventMap */> removeEventListener(
-        type: Type,
-        handler: EventListenerOrEventListenerObject<Any?>,
-        options: EventTargetEventListenerOptions = definedExternally
-    ): Unit
-
-    fun <Type : /* keyof EventMap */> removeEventListener(
-        type: Type,
-        handler: EventListenerOrEventListenerObject<Any?>,
-        options: Boolean = definedExternally
-    ): Unit
-
-    fun dispatchEvent(event: Any?): Boolean
-}
+//open external class EventTarget<EventMap : Record<String, Event> /* default is Record<String, Event> */> {
+//    constructor ()
+//
+//    fun <Type : /* keyof EventMap */> addEventListener(
+//        type: Type,
+//        handler: EventListenerOrEventListenerObject<Any?>,
+//        options: EventTargetAddEventListenerOptions = definedExternally
+//    ): Unit
+//
+//    fun <Type : /* keyof EventMap */> addEventListener(
+//        type: Type,
+//        handler: EventListenerOrEventListenerObject<Any?>,
+//        options: Boolean = definedExternally
+//    ): Unit
+//
+//    fun <Type : /* keyof EventMap */> removeEventListener(
+//        type: Type,
+//        handler: EventListenerOrEventListenerObject<Any?>,
+//        options: EventTargetEventListenerOptions = definedExternally
+//    ): Unit
+//
+//    fun <Type : /* keyof EventMap */> removeEventListener(
+//        type: Type,
+//        handler: EventListenerOrEventListenerObject<Any?>,
+//        options: Boolean = definedExternally
+//    ): Unit
+//
+//    fun dispatchEvent(event: Any?): Boolean
+//}
 
 
 external interface EventTargetEventListenerOptions {
@@ -821,12 +825,12 @@ external interface SchedulerWaitOptions {
 }
 
 
-external class ExtendableEvent : Event {
+external interface ExtendableEvent : Event {
     fun waitUntil(promise: Promise<Any?>): Unit
 }
 
 
-external class Blob {
+open external class Blob {
     constructor (
         bits: Array<(Any /* (ArrayBuffer | ArrayBufferView) | string | Blob */)> = definedExternally,
         options: BlobOptions = definedExternally
@@ -842,7 +846,7 @@ external class Blob {
 
     fun arrayBuffer(): Promise<ArrayBuffer>
     fun text(): Promise<String>
-    fun stream(): ReadableStream
+    fun stream(): ReadableStream<Any>
 }
 
 
@@ -1217,7 +1221,7 @@ external interface SubtleCryptoDeriveKeyAlgorithm {
     var salt: ArrayBuffer?
     var iterations: Double?
     var hash: (Any /* string | SubtleCryptoHashAlgorithm */)?
-    var $public: CryptoKey?
+    var `public`: CryptoKey?
     var info: ArrayBuffer?
 }
 
@@ -1367,13 +1371,13 @@ external class FormData {
     fun has(name: String): Boolean
     fun set(name: String, value: String): Unit
     fun set(name: String, value: Blob, filename: String = definedExternally): Unit
-    fun entries(): IterableIterator</* [
-    key: string,
-    value: string
-] */>
+//    fun entries(): IterableIterator</* [
+//    key: string,
+//    value: string
+//] */>
 
-    fun keys(): IterableIterator<String>
-    fun values(): IterableIterator<Any /* File | string */>
+    //    fun keys(): IterableIterator<String>
+//    fun values(): IterableIterator<Any /* File | string */>
     fun <This /* default is Any? */> forEach(
         callback: (`this`: This, value: String, key: String, parent: FormData) -> Unit,
         thisArg: This = definedExternally
@@ -1472,7 +1476,7 @@ external interface DocumentEnd {
 }
 
 
-external class FetchEvent : ExtendableEvent {
+abstract external class FetchEvent : ExtendableEvent {
     val request: Request
     fun respondWith(promise: Response): Unit
 
@@ -1483,36 +1487,37 @@ external class FetchEvent : ExtendableEvent {
 
 typealias HeadersInit = Any /* Headers | Iterable<Iterable<string>> | Record<string, string> */
 
+typealias IterableIterator<T> = Collection<T>
 
-external class Headers {
-    constructor (init: HeadersInit = definedExternally)
-
-    fun get(name: String): String?
-    fun getAll(name: String): Array<String>
-    fun has(name: String): Boolean
-    fun set(name: String, value: String): Unit
-    fun append(name: String, value: String): Unit
-    fun delete(name: String): Unit
-    fun <This /* default is Any? */> forEach(
-        callback: (`this`: This, value: String, key: String, parent: Headers) -> Unit,
-        thisArg: This = definedExternally
-    ): Unit
-
-    fun entries(): IterableIterator</* [
-    key: string,
-    value: string
-] */>
-
-    fun keys(): IterableIterator<String>
-    fun values(): IterableIterator<String>
-}
+//external class Headers {
+//    constructor (init: HeadersInit = definedExternally)
+//
+//    fun get(name: String): String?
+//    fun getAll(name: String): Array<String>
+//    fun has(name: String): Boolean
+//    fun set(name: String, value: String): Unit
+//    fun append(name: String, value: String): Unit
+//    fun delete(name: String): Unit
+//    fun <This /* default is Any? */> forEach(
+//        callback: (`this`: This, value: String, key: String, parent: Headers) -> Unit,
+//        thisArg: This = definedExternally
+//    ): Unit
+////
+////    fun entries(): IterableIterator<></* [
+////    key: string,
+////    value: string
+////] */>
+//
+//    fun keys(): IterableIterator<String>
+//    fun values(): IterableIterator<String>
+//}
 
 
 typealias BodyInit = Any /* ReadableStream<Uint8Array> | string | ArrayBuffer | ArrayBufferView | Blob | URLSearchParams | FormData */
 
 
-external class Body {
-    val body: ReadableStream?
+external interface Body {
+    val body: ReadableStream<Uint8Array>?
     val bodyUsed: Boolean
     fun arrayBuffer(): Promise<ArrayBuffer>
     fun text(): Promise<String>
@@ -1522,8 +1527,7 @@ external class Body {
 }
 
 
-external class Response : Body {
-    constructor (body: BodyInit? = definedExternally, init: ResponseInit = definedExternally)
+abstract external class Response(body: BodyInit? = definedExternally, init: ResponseInit = definedExternally) : Body {
 
     fun clone(): Response
     val status: Double
@@ -1554,64 +1558,65 @@ external interface ResponseInit {
     var encodeBody: (ResponseInitEncodeBody)?
 }
 
+//
+//typealias RequestInfo = Request /* Request<CfHostMetadata, Cf> | string | URL */
+//
+//
+//abstract external class Request : Body {
+//    constructor (input: Request, init: RequestInit<dynamic> = definedExternally)
+//
+//    fun clone(): Request<dynamic, dynamic>
+//
+//    /** Returns request's HTTP method, which is "GET" by default. */
+//    val method: String
+//
+//    /** Returns the URL of request as a string. */
+//    val url: String
+//
+//    /** Returns a Headers object consisting of the headers associated with request. Note that headers added in the network layer by the user agent will not be accounted for in this object, e.g., the "Host" header. */
+//    val headers: Headers
+//
+//    /** Returns the redirect mode associated with request, which is a string indicating how redirects for the request will be handled during fetching. A request will follow redirects by default. */
+//    val redirect: String
+//    val fetcher: Fetcher?
+//
+//    /** Returns the signal associated with request, which is an AbortSignal object indicating whether or not request has been aborted, and its abort event handler. */
+//    val signal: AbortSignal
+////    val cf: Cf?
+//
+//    /** Returns request's subresource integrity metadata, which is a cryptographic hash of the resource being fetched. Its value consists of multiple hashes separated by whitespace. [SRI] */
+//    val integrity: String
+//
+//    /** Returns a boolean indicating whether or not request can outlive the global in which it was created. */
+//    val keepalive: Boolean
+//}
+//
+//
+//external interface RequestInit<Cf /* default is CfProperties */> {
+//    /** A string to set request's method. */
+//    var method: String?
+//
+//    /** A Headers object, an object literal, or an array of two-item arrays to set request's headers. */
+//    var headers: HeadersInit?
+//
+//    /** A BodyInit object or null to set request's body. */
+//    var body: BodyInit?
+//
+//    /** A string indicating whether request follows redirects, results in an error upon encountering a redirect, or returns the redirect (in an opaque fashion). Sets request's redirect. */
+//    var redirect: String?
+//    var fetcher: Fetcher?
+//    var cf: Cf?
+//
+//    /** A cryptographic hash of the resource to be fetched by request. Sets request's integrity. */
+//    var integrity: String?
+//
+//    /** An AbortSignal to set request's signal. */
+//    var signal: AbortSignal?
+//}
 
-typealias RequestInfo<CfHostMetadata /* default is Any? */, Cf /* default is CfProperties<CfHostMetadata> */> = Any /* Request<CfHostMetadata, Cf> | string | URL */
+typealias RequestInfo = Request
 
-
-external class Request<CfHostMetadata /* default is Any? */, Cf /* default is CfProperties<CfHostMetadata> */> : Body {
-    constructor (input: RequestInfo<CfProperties>, init: RequestInit<Cf> = definedExternally)
-
-    fun clone(): Request<CfHostMetadata, Cf>
-
-    /** Returns request's HTTP method, which is "GET" by default. */
-    val method: String
-
-    /** Returns the URL of request as a string. */
-    val url: String
-
-    /** Returns a Headers object consisting of the headers associated with request. Note that headers added in the network layer by the user agent will not be accounted for in this object, e.g., the "Host" header. */
-    val headers: Headers
-
-    /** Returns the redirect mode associated with request, which is a string indicating how redirects for the request will be handled during fetching. A request will follow redirects by default. */
-    val redirect: String
-    val fetcher: Fetcher?
-
-    /** Returns the signal associated with request, which is an AbortSignal object indicating whether or not request has been aborted, and its abort event handler. */
-    val signal: AbortSignal
-    val cf: Cf?
-
-    /** Returns request's subresource integrity metadata, which is a cryptographic hash of the resource being fetched. Its value consists of multiple hashes separated by whitespace. [SRI] */
-    val integrity: String
-
-    /** Returns a boolean indicating whether or not request can outlive the global in which it was created. */
-    val keepalive: Boolean
-}
-
-
-external interface RequestInit<Cf /* default is CfProperties */> {
-    /** A string to set request's method. */
-    var method: String?
-
-    /** A Headers object, an object literal, or an array of two-item arrays to set request's headers. */
-    var headers: HeadersInit?
-
-    /** A BodyInit object or null to set request's body. */
-    var body: BodyInit?
-
-    /** A string indicating whether request follows redirects, results in an error upon encountering a redirect, or returns the redirect (in an opaque fashion). Sets request's redirect. */
-    var redirect: String?
-    var fetcher: Fetcher?
-    var cf: Cf?
-
-    /** A cryptographic hash of the resource to be fetched by request. Sets request's integrity. */
-    var integrity: String?
-
-    /** An AbortSignal to set request's signal. */
-    var signal: AbortSignal?
-}
-
-
-external class Fetcher {
+open external class Fetcher {
     fun fetch(input: RequestInfo, init: RequestInit = definedExternally): Promise<Response>
     fun connect(address: SocketAddress, options: SocketOptions = definedExternally): Socket
 
@@ -1625,14 +1630,14 @@ external interface FetcherPutOptions {
 }
 
 
-external interface KVNamespaceListKey<Metadata, Key : String /* default is String */> {
-    var name: Key
+external interface KVNamespaceListKey<Metadata  /* default is String */> {
+    var name: String
     var expiration: Double?
     var metadata: Metadata?
 }
 
 
-typealias KVNamespaceListResult<Metadata, Key : String /* default is String */> = Any /* {
+typealias KVNamespaceListResult<Metadata, Key /* default is String */> = Any /* {
     list_complete: false;
     keys: KVNamespaceListKey<Metadata, Key>[];
     cursor: string;
@@ -1644,57 +1649,57 @@ typealias KVNamespaceListResult<Metadata, Key : String /* default is String */> 
 } */
 
 
-external interface KVNamespace<Key : String /* default is String */> {
-    fun get(key: Key, options: Partial<KVNamespaceGetOptions<Nothing?>> = definedExternally): Promise<String?>
-    fun get(key: Key, type: String /* "text" */): Promise<String?>
-    fun <ExpectedValue /* default is Any? */> get(key: Key, type: String /* "json" */): Promise<ExpectedValue?>
-    fun get(key: Key, type: String /* "arrayBuffer" */): Promise<ArrayBuffer?>
-    fun get(key: Key, type: String /* "stream" */): Promise<ReadableStream?>
-    fun get(
-        key: Key,
-        options: KVNamespaceGetOptions<String /* "stream" */> = definedExternally
-    ): Promise<ReadableStream?>
-
-    fun <Metadata /* default is Any? */> list(options: KVNamespaceListOptions = definedExternally): Promise<KVNamespaceListResult<Metadata, Key>>
-    fun put(key: Key, value: String, options: KVNamespacePutOptions = definedExternally): Promise<Unit>
-
-    fun put(key: Key, value: ArrayBuffer, options: KVNamespacePutOptions = definedExternally): Promise<Unit>
-
-    fun put(key: Key, value: ArrayBufferView, options: KVNamespacePutOptions = definedExternally): Promise<Unit>
-
-    fun put(key: Key, value: ReadableStream, options: KVNamespacePutOptions = definedExternally): Promise<Unit>
-    fun <Metadata /* default is Any? */> getWithMetadata(
-        key: Key,
-        options: Partial<KVNamespaceGetOptions<Nothing?>> = definedExternally
-    ): Promise<KVNamespaceGetWithMetadataResult<String, Metadata>>
-
-    fun <Metadata /* default is Any? */> getWithMetadata(
-        key: Key,
-        type: String /* "text" */
-    ): Promise<KVNamespaceGetWithMetadataResult<String, Metadata>>
-
-    fun <ExpectedValue /* default is Any? */, Metadata /* default is Any? */> getWithMetadata(
-        key: Key,
-        type: String /* "json" */
-    ): Promise<KVNamespaceGetWithMetadataResult<ExpectedValue, Metadata>>
-
-    fun <Metadata /* default is Any? */> getWithMetadata(
-        key: Key,
-        type: String /* "arrayBuffer" */
-    ): Promise<KVNamespaceGetWithMetadataResult<ArrayBuffer, Metadata>>
-
-    fun <Metadata /* default is Any? */> getWithMetadata(
-        key: Key,
-        type: String /* "stream" */
-    ): Promise<KVNamespaceGetWithMetadataResult<ReadableStream, Metadata>>
-
-    fun <Metadata /* default is Any? */> getWithMetadata(
-        key: Key,
-        options: KVNamespaceGetOptions<String /* "stream" */>
-    ): Promise<KVNamespaceGetWithMetadataResult<ReadableStream, Metadata>>
-
-    fun delete(key: Key): Promise<Unit>
-}
+//external interface KVNamespace<Key /* default is String */> {
+////    fun get(key: Key, options: Partial<KVNamespaceGetOptions<Nothing?>> = definedExternally): Promise<String?>
+//    fun get(key: Key, type: String /* "text" */): Promise<String?>
+//    fun <ExpectedValue /* default is Any? */> get(key: Key, type: String /* "json" */): Promise<ExpectedValue?>
+//    fun get(key: Key, type: String /* "arrayBuffer" */): Promise<ArrayBuffer?>
+//    fun get(key: Key, type: String /* "stream" */): Promise<ReadableStream?>
+//    fun get(
+//        key: Key,
+//        options: KVNamespaceGetOptions<String /* "stream" */> = definedExternally
+//    ): Promise<ReadableStream?>
+//
+//    fun <Metadata /* default is Any? */> list(options: KVNamespaceListOptions = definedExternally): Promise<KVNamespaceListResult<Metadata, Key>>
+//    fun put(key: Key, value: String, options: KVNamespacePutOptions = definedExternally): Promise<Unit>
+//
+//    fun put(key: Key, value: ArrayBuffer, options: KVNamespacePutOptions = definedExternally): Promise<Unit>
+//
+//    fun put(key: Key, value: ArrayBufferView, options: KVNamespacePutOptions = definedExternally): Promise<Unit>
+//
+//    fun put(key: Key, value: ReadableStream, options: KVNamespacePutOptions = definedExternally): Promise<Unit>
+//    fun <Metadata /* default is Any? */> getWithMetadata(
+//        key: Key,
+//        options: Partial<KVNamespaceGetOptions<Nothing?>> = definedExternally
+//    ): Promise<KVNamespaceGetWithMetadataResult<String, Metadata>>
+//
+//    fun <Metadata /* default is Any? */> getWithMetadata(
+//        key: Key,
+//        type: String /* "text" */
+//    ): Promise<KVNamespaceGetWithMetadataResult<String, Metadata>>
+//
+//    fun <ExpectedValue /* default is Any? */, Metadata /* default is Any? */> getWithMetadata(
+//        key: Key,
+//        type: String /* "json" */
+//    ): Promise<KVNamespaceGetWithMetadataResult<ExpectedValue, Metadata>>
+//
+//    fun <Metadata /* default is Any? */> getWithMetadata(
+//        key: Key,
+//        type: String /* "arrayBuffer" */
+//    ): Promise<KVNamespaceGetWithMetadataResult<ArrayBuffer, Metadata>>
+//
+//    fun <Metadata /* default is Any? */> getWithMetadata(
+//        key: Key,
+//        type: String /* "stream" */
+//    ): Promise<KVNamespaceGetWithMetadataResult<ReadableStream, Metadata>>
+//
+//    fun <Metadata /* default is Any? */> getWithMetadata(
+//        key: Key,
+//        options: KVNamespaceGetOptions<String /* "stream" */>
+//    ): Promise<KVNamespaceGetWithMetadataResult<ReadableStream, Metadata>>
+//
+//    fun delete(key: Key): Promise<Unit>
+//}
 
 
 external interface KVNamespaceListOptions {
@@ -1780,219 +1785,221 @@ external interface MessageBatch<Body /* default is Any? */> {
     fun ackAll(): Unit
 }
 
+//region R2
+//external class R2Error : Error {
+//    val name: String
+//    val code: Double
+//    override val message: kotlin.String?
+//    val action: String
+//    val stack: Any?
+//}
+//
+//
+//external interface R2ListOptions {
+//    var limit: Double?
+//    var prefix: String?
+//    var cursor: String?
+//    var delimiter: String?
+//    var startAfter: String?
+//}
+//
+//
+//external class R2Bucket {
+//    fun head(key: String): Promise<R2Object?>
+//    fun get(
+//        key: String, options: Any /* R2GetOptions & {
+//    onlyIf: R2Conditional | Headers;
+//} */
+//    ): Promise<(Any /* R2ObjectBody | R2Object | null */)?>
+//
+//    fun get(key: String, options: R2GetOptions = definedExternally): Promise<R2ObjectBody?>
+//    fun put(key: String, value: ReadableStream?, options: R2PutOptions = definedExternally): Promise<R2Object>
+//
+//    fun put(key: String, value: ArrayBuffer?, options: R2PutOptions = definedExternally): Promise<R2Object>
+//
+//    fun put(key: String, value: ArrayBufferView?, options: R2PutOptions = definedExternally): Promise<R2Object>
+//
+//    fun put(key: String, value: String?, options: R2PutOptions = definedExternally): Promise<R2Object>
+//
+//    fun put(key: String, value: Blob?, options: R2PutOptions = definedExternally): Promise<R2Object>
+//    fun put(
+//        key: String, value: ReadableStream?, options: Any /* R2PutOptions & {
+//    onlyIf: R2Conditional | Headers;
+//} */ = definedExternally
+//    ): Promise<R2Object?>
+//
+//    fun put(
+//        key: String, value: ArrayBuffer?, options: Any /* R2PutOptions & {
+//    onlyIf: R2Conditional | Headers;
+//} */ = definedExternally
+//    ): Promise<R2Object?>
+//
+//    fun put(
+//        key: String, value: ArrayBufferView?, options: Any /* R2PutOptions & {
+//    onlyIf: R2Conditional | Headers;
+//} */ = definedExternally
+//    ): Promise<R2Object?>
+//
+//    fun put(
+//        key: String, value: String?, options: Any /* R2PutOptions & {
+//    onlyIf: R2Conditional | Headers;
+//} */ = definedExternally
+//    ): Promise<R2Object?>
+//
+//    fun put(
+//        key: String, value: Blob?, options: Any /* R2PutOptions & {
+//    onlyIf: R2Conditional | Headers;
+//} */ = definedExternally
+//    ): Promise<R2Object?>
+//
+//    fun createMultipartUpload(key: String, options: R2MultipartOptions = definedExternally): Promise<R2MultipartUpload>
+//    fun resumeMultipartUpload(key: String, uploadId: String): R2MultipartUpload
+//    fun delete(keys: String): Promise<Unit>
+//
+//    fun delete(keys: Array<String>): Promise<Unit>
+//    fun list(options: R2ListOptions = definedExternally): Promise<R2Objects>
+//}
+//
+//
+//external interface R2MultipartUpload {
+//    val key: String
+//    val uploadId: String
+//    fun uploadPart(partNumber: Double, value: ReadableStream): Promise<R2UploadedPart>
+//
+//    fun uploadPart(partNumber: Double, value: ArrayBuffer): Promise<R2UploadedPart>
+//
+//    fun uploadPart(partNumber: Double, value: ArrayBufferView): Promise<R2UploadedPart>
+//
+//    fun uploadPart(partNumber: Double, value: String): Promise<R2UploadedPart>
+//
+//    fun uploadPart(partNumber: Double, value: Blob): Promise<R2UploadedPart>
+//    fun abort(): Promise<Unit>
+//    fun complete(uploadedParts: Array<R2UploadedPart>): Promise<R2Object>
+//}
+//
+//
+//external interface R2UploadedPart {
+//    var partNumber: Double
+//    var etag: String
+//}
+//
+//
+//open external class R2Object {
+//    val key: String
+//    val version: String
+//    val size: Double
+//    val etag: String
+//    val httpEtag: String
+//    val checksums: R2Checksums
+//    val uploaded: Date
+//    val httpMetadata: R2HTTPMetadata?
+//    val customMetadata: Record<String, String>?
+//    val range: R2Range?
+//    fun writeHttpMetadata(headers: Headers): Unit
+//}
+//
+//
+//external interface R2ObjectBody : R2Object {
+//
+//    val body: ReadableStream
+//
+//
+//    val bodyUsed: Boolean
+//
+//    fun arrayBuffer(): Promise<ArrayBuffer>
+//    fun text(): Promise<String>
+//    fun <T> json(): Promise<T>
+//    fun blob(): Promise<Blob>
+//}
+//
+//
+//typealias R2Range = Any /* {
+//    offset: number;
+//    length?: number;
+//} | {
+//    offset?: number;
+//    length: number;
+//} | {
+//    suffix: number;
+//} */
+//
+//
+//
+//external interface R2Conditional {
+//    var etagMatches: String?
+//    var etagDoesNotMatch: String?
+//    var uploadedBefore: Date?
+//    var uploadedAfter: Date?
+//    var secondsGranularity: Boolean?
+//}
+//
+//
+//external interface R2GetOptions {
+//    var onlyIf: (Any /* R2Conditional | Headers */)?
+//    var range: (Any /* R2Range | Headers */)?
+//}
+//
+//
+//external interface R2PutOptions {
+//    var onlyIf: (Any /* R2Conditional | Headers */)?
+//    var httpMetadata: (Any /* R2HTTPMetadata | Headers */)?
+//    var customMetadata: Record<String, String>?
+//    var md5: (Any /* ArrayBuffer | string */)?
+//    var sha1: (Any /* ArrayBuffer | string */)?
+//    var sha256: (Any /* ArrayBuffer | string */)?
+//    var sha384: (Any /* ArrayBuffer | string */)?
+//    var sha512: (Any /* ArrayBuffer | string */)?
+//}
+//
+//
+//external interface R2MultipartOptions {
+//    var httpMetadata: (Any /* R2HTTPMetadata | Headers */)?
+//    var customMetadata: Record<String, String>?
+//}
+//
+//
+//external interface R2Checksums {
+//    val md5: ArrayBuffer?
+//    val sha1: ArrayBuffer?
+//    val sha256: ArrayBuffer?
+//    val sha384: ArrayBuffer?
+//    val sha512: ArrayBuffer?
+//    fun toJSON(): R2StringChecksums
+//}
+//
+//
+//external interface R2StringChecksums {
+//    var md5: String?
+//    var sha1: String?
+//    var sha256: String?
+//    var sha384: String?
+//    var sha512: String?
+//}
+//
+//
+//external interface R2HTTPMetadata {
+//    var contentType: String?
+//    var contentLanguage: String?
+//    var contentDisposition: String?
+//    var contentEncoding: String?
+//    var cacheControl: String?
+//    var cacheExpiry: Date?
+//}
+//
+//
+//typealias R2Objects = Any /* {
+//    objects: R2Object[];
+//    delimitedPrefixes: string[];
+//} & ({
+//    truncated: true;
+//    cursor: string;
+//} | {
+//    truncated: false;
+//}) */
 
-external interface R2Error : Error {
-    val name: String
-    val code: Double
-    val message: String
-    val action: String
-    val stack: Any?
-}
+//endregion
 
-
-external interface R2ListOptions {
-    var limit: Double?
-    var prefix: String?
-    var cursor: String?
-    var delimiter: String?
-    var startAfter: String?
-}
-
-
-external class R2Bucket {
-    fun head(key: String): Promise<R2Object?>
-    fun get(
-        key: String, options: Any /* R2GetOptions & {
-    onlyIf: R2Conditional | Headers;
-} */
-    ): Promise<(Any /* R2ObjectBody | R2Object | null */)?>
-
-    fun get(key: String, options: R2GetOptions = definedExternally): Promise<R2ObjectBody?>
-    fun put(key: String, value: ReadableStream?, options: R2PutOptions = definedExternally): Promise<R2Object>
-
-    fun put(key: String, value: ArrayBuffer?, options: R2PutOptions = definedExternally): Promise<R2Object>
-
-    fun put(key: String, value: ArrayBufferView?, options: R2PutOptions = definedExternally): Promise<R2Object>
-
-    fun put(key: String, value: String?, options: R2PutOptions = definedExternally): Promise<R2Object>
-
-    fun put(key: String, value: Blob?, options: R2PutOptions = definedExternally): Promise<R2Object>
-    fun put(
-        key: String, value: ReadableStream?, options: Any /* R2PutOptions & {
-    onlyIf: R2Conditional | Headers;
-} */ = definedExternally
-    ): Promise<R2Object?>
-
-    fun put(
-        key: String, value: ArrayBuffer?, options: Any /* R2PutOptions & {
-    onlyIf: R2Conditional | Headers;
-} */ = definedExternally
-    ): Promise<R2Object?>
-
-    fun put(
-        key: String, value: ArrayBufferView?, options: Any /* R2PutOptions & {
-    onlyIf: R2Conditional | Headers;
-} */ = definedExternally
-    ): Promise<R2Object?>
-
-    fun put(
-        key: String, value: String?, options: Any /* R2PutOptions & {
-    onlyIf: R2Conditional | Headers;
-} */ = definedExternally
-    ): Promise<R2Object?>
-
-    fun put(
-        key: String, value: Blob?, options: Any /* R2PutOptions & {
-    onlyIf: R2Conditional | Headers;
-} */ = definedExternally
-    ): Promise<R2Object?>
-
-    fun createMultipartUpload(key: String, options: R2MultipartOptions = definedExternally): Promise<R2MultipartUpload>
-    fun resumeMultipartUpload(key: String, uploadId: String): R2MultipartUpload
-    fun delete(keys: String): Promise<Unit>
-
-    fun delete(keys: Array<String>): Promise<Unit>
-    fun list(options: R2ListOptions = definedExternally): Promise<R2Objects>
-}
-
-
-external interface R2MultipartUpload {
-    val key: String
-    val uploadId: String
-    fun uploadPart(partNumber: Double, value: ReadableStream): Promise<R2UploadedPart>
-
-    fun uploadPart(partNumber: Double, value: ArrayBuffer): Promise<R2UploadedPart>
-
-    fun uploadPart(partNumber: Double, value: ArrayBufferView): Promise<R2UploadedPart>
-
-    fun uploadPart(partNumber: Double, value: String): Promise<R2UploadedPart>
-
-    fun uploadPart(partNumber: Double, value: Blob): Promise<R2UploadedPart>
-    fun abort(): Promise<Unit>
-    fun complete(uploadedParts: Array<R2UploadedPart>): Promise<R2Object>
-}
-
-
-external interface R2UploadedPart {
-    var partNumber: Double
-    var etag: String
-}
-
-
-external class R2Object {
-    val key: String
-    val version: String
-    val size: Double
-    val etag: String
-    val httpEtag: String
-    val checksums: R2Checksums
-    val uploaded: Date
-    val httpMetadata: R2HTTPMetadata?
-    val customMetadata: Record<String, String>?
-    val range: R2Range?
-    fun writeHttpMetadata(headers: Headers): Unit
-}
-
-
-external interface R2ObjectBody : R2Object {
-
-    val body: ReadableStream
-
-
-    val bodyUsed: Boolean
-
-    fun arrayBuffer(): Promise<ArrayBuffer>
-    fun text(): Promise<String>
-    fun <T> json(): Promise<T>
-    fun blob(): Promise<Blob>
-}
-
-
-typealias R2Range = Any /* {
-    offset: number;
-    length?: number;
-} | {
-    offset?: number;
-    length: number;
-} | {
-    suffix: number;
-} */
-
-
-external interface R2Conditional {
-    var etagMatches: String?
-    var etagDoesNotMatch: String?
-    var uploadedBefore: Date?
-    var uploadedAfter: Date?
-    var secondsGranularity: Boolean?
-}
-
-
-external interface R2GetOptions {
-    var onlyIf: (Any /* R2Conditional | Headers */)?
-    var range: (Any /* R2Range | Headers */)?
-}
-
-
-external interface R2PutOptions {
-    var onlyIf: (Any /* R2Conditional | Headers */)?
-    var httpMetadata: (Any /* R2HTTPMetadata | Headers */)?
-    var customMetadata: Record<String, String>?
-    var md5: (Any /* ArrayBuffer | string */)?
-    var sha1: (Any /* ArrayBuffer | string */)?
-    var sha256: (Any /* ArrayBuffer | string */)?
-    var sha384: (Any /* ArrayBuffer | string */)?
-    var sha512: (Any /* ArrayBuffer | string */)?
-}
-
-
-external interface R2MultipartOptions {
-    var httpMetadata: (Any /* R2HTTPMetadata | Headers */)?
-    var customMetadata: Record<String, String>?
-}
-
-
-external interface R2Checksums {
-    val md5: ArrayBuffer?
-    val sha1: ArrayBuffer?
-    val sha256: ArrayBuffer?
-    val sha384: ArrayBuffer?
-    val sha512: ArrayBuffer?
-    fun toJSON(): R2StringChecksums
-}
-
-
-external interface R2StringChecksums {
-    var md5: String?
-    var sha1: String?
-    var sha256: String?
-    var sha384: String?
-    var sha512: String?
-}
-
-
-external interface R2HTTPMetadata {
-    var contentType: String?
-    var contentLanguage: String?
-    var contentDisposition: String?
-    var contentEncoding: String?
-    var cacheControl: String?
-    var cacheExpiry: Date?
-}
-
-
-typealias R2Objects = Any /* {
-    objects: R2Object[];
-    delimitedPrefixes: string[];
-} & ({
-    truncated: true;
-    cursor: string;
-} | {
-    truncated: false;
-}) */
-
-
-external class ScheduledEvent : ExtendableEvent {
+abstract external class ScheduledEvent : ExtendableEvent {
     val scheduledTime: Double
     val cron: String
     fun noRetry(): Unit
@@ -2093,12 +2100,12 @@ external interface ReadableStream<R /* default is Any? */> {
     ): ReadableStream<T>
 
     fun pipeTo(destination: WritableStream<R>, options: StreamPipeOptions = definedExternally): Promise<Unit>
-    fun tee(): /* [
+    fun tee(): Array<ReadableStream<R>> /* [
     ReadableStream<R>,
     ReadableStream<R>
 ] */
 
-    fun values(options: ReadableStreamValuesOptions = definedExternally): AsyncIterableIterator<R>
+//    fun values(options: ReadableStreamValuesOptions = definedExternally): AsyncIterableIterator<R>
 }
 
 
@@ -2116,7 +2123,7 @@ external class ReadableStreamDefaultReader<R /* default is Any? */> {
 
 
 external class ReadableStreamBYOBReader {
-    constructor (stream: ReadableStream)
+    constructor (stream: ReadableStream<Any>)
 
     val closed: Promise<Unit>
     fun cancel(reason: Any? = definedExternally): Promise<Unit>
@@ -2189,10 +2196,10 @@ external interface ReadableWritablePair<R /* default is Any? */, W /* default is
 }
 
 
-external class WritableStream<W /* default is Any? */> {
+open external class WritableStream<W /* default is Any? */> {
     constructor (
-        underlyingSink: UnderlyingSink = definedExternally,
-        queuingStrategy: QueuingStrategy = definedExternally
+        underlyingSink: UnderlyingSink<W> = definedExternally,
+        queuingStrategy: QueuingStrategy<W> = definedExternally
     )
 
     val locked: Boolean
@@ -2203,7 +2210,7 @@ external class WritableStream<W /* default is Any? */> {
 
 
 external class WritableStreamDefaultWriter<W /* default is Any? */> {
-    constructor (stream: WritableStream)
+    constructor (stream: WritableStream<W>)
 
     val closed: Promise<Unit>
     val ready: Promise<Unit>
@@ -2215,7 +2222,7 @@ external class WritableStreamDefaultWriter<W /* default is Any? */> {
 }
 
 
-external class TransformStream<I /* default is Any? */, O /* default is Any? */> {
+open external class TransformStream<I /* default is Any? */, O /* default is Any? */> {
     constructor (
         transformer: Transformer<I, O> = definedExternally,
         writableStrategy: QueuingStrategy<I> = definedExternally,
@@ -2231,13 +2238,13 @@ external class FixedLengthStream : IdentityTransformStream {
     constructor (expectedLength: Double, queuingStrategy: IdentityTransformStreamQueuingStrategy = definedExternally)
 
     constructor (
-        expectedLength: /* bigint */,
+        expectedLength:Long /* bigint */,
         queuingStrategy: IdentityTransformStreamQueuingStrategy = definedExternally
     )
 }
 
 
-external class IdentityTransformStream : TransformStream<Any /* ArrayBuffer | ArrayBufferView */, Uint8Array> {
+open external class IdentityTransformStream : TransformStream<Any /* ArrayBuffer | ArrayBufferView */, Uint8Array> {
     constructor (queuingStrategy: IdentityTransformStreamQueuingStrategy = definedExternally)
 }
 
@@ -2280,23 +2287,23 @@ external interface TextDecoderStreamTextDecoderStreamInit {
 external class ByteLengthQueuingStrategy : QueuingStrategy<ArrayBufferView> {
     constructor (init: QueuingStrategyInit)
 
-    val highWaterMark: Double
+    override var highWaterMark: Any?
 
 
-    val size: (chunk: Any? /* use undefined for default */) -> Double
-
-}
-
-
-external class CountQueuingStrategy : QueuingStrategy {
-    constructor (init: QueuingStrategyInit)
-
-    val highWaterMark: Double
-
-
-    val size: (chunk: Any? /* use undefined for default */) -> Double
+    override var size: ((ArrayBufferView) -> Any)?
 
 }
+
+
+//external class CountQueuingStrategy : QueuingStrategy {
+//    constructor (init: QueuingStrategyInit)
+//
+//    val highWaterMark: Double
+//
+//
+//    val size: (chunk: Any? /* use undefined for default */) -> Double
+//
+//}
 
 
 external interface QueuingStrategyInit {
@@ -2309,7 +2316,7 @@ external interface QueuingStrategyInit {
 }
 
 
-external class TailEvent : ExtendableEvent {
+abstract external class TailEvent : ExtendableEvent {
     val events: Array<TraceItem>
     val traces: Array<TraceItem>
 }
@@ -2430,7 +2437,6 @@ external class URL {
     var search: String
     val searchParams: URLSearchParams
     var hash: String
-    fun toString(): String
     fun toJSON(): String
 }
 
@@ -2442,12 +2448,12 @@ external class URLSearchParams {
 
     constructor (init: Record<String, String> = definedExternally)
 
-    constructor (
-        init: Array</* [
-    key: string,
-    value: string
-] */> = definedExternally
-    )
+//    constructor (
+//        init: Array</* [
+//    key: string,
+//    value: string
+//] */> = definedExternally
+//    )
 
     val size: Double
 
@@ -2458,10 +2464,10 @@ external class URLSearchParams {
     fun has(name: String): Boolean
     fun set(name: String, value: String): Unit
     fun sort(): Unit
-    fun entries(): IterableIterator</* [
-    key: string,
-    value: string
-] */>
+//    fun entries(): IterableIterator</* [
+//    key: string,
+//    value: string
+//] */>
 
     fun keys(): IterableIterator<String>
     fun values(): IterableIterator<String>
@@ -2470,7 +2476,7 @@ external class URLSearchParams {
         thisArg: This = definedExternally
     ): Unit
 
-    fun toString(): String
+//    fun toString(): String
 }
 
 
@@ -2546,7 +2552,7 @@ external interface URLPatternURLPatternResult {
 }
 
 
-external class CloseEvent : Event {
+abstract external class CloseEvent : Event {
     constructor (type: String, initializer: CloseEventInit)
 
     /** Returns the WebSocket connection close code provided by the server. */
@@ -2567,7 +2573,7 @@ external interface CloseEventInit {
 }
 
 
-external class MessageEvent : Event {
+abstract external class MessageEvent : Event {
     constructor (type: String, initializer: MessageEventInit)
 
     val data: Any /* ArrayBuffer | string */
@@ -2598,7 +2604,7 @@ external interface WebSocketEventMap {
 }
 
 
-external class WebSocket : EventTarget<WebSocketEventMap> {
+external class WebSocket : EventTarget {
     constructor (url: String, protocols: Array<String> = definedExternally)
 
     constructor (url: String, protocols: String = definedExternally)
@@ -2640,10 +2646,10 @@ external val WebSocketPair: Temp2
 
 external interface Socket {
 
-    val readable: ReadableStream
+    val readable: ReadableStream<Int>
 
 
-    val writable: WritableStream
+    val writable: WritableStream<Int>
 
 
     val closed: Promise<Unit>
@@ -3144,9 +3150,9 @@ external interface IncomingRequestCfPropertiesBotManagementEnterprise : Incoming
     /**
      * Results of Cloudflare's Bot Management analysis
      */
-    var botManagement: Any /* IncomingRequestCfPropertiesBotManagementBase & {
-    ja3Hash: string;
-} */
+//    var botManagement: Any /* IncomingRequestCfPropertiesBotManagementBase & {
+//    ja3Hash: string;
+//} */
 }
 
 
@@ -3318,7 +3324,7 @@ external interface IncomingRequestCfPropertiesTLSClientAuth {
      *
      * @example "FAILED:self signed certificate"
      */
-    var certVerified: Exclude<CertVerificationStatus, String /* "NONE" */>
+//    var certVerified: Exclude<CertVerificationStatus, String /* "NONE" */>
 
     /** The presented certificate's revokation status.
      *
@@ -3818,7 +3824,7 @@ external interface ForwardableEmailMessage : EmailMessage {
     /**
      * Stream of the email message content.
      */
-    val raw: ReadableStream
+    val raw: ReadableStream<Any>
 
     /**
      * An [Headers object](https://developer.mozilla.org/en-US/docs/Web/API/Headers).
@@ -3856,7 +3862,7 @@ external interface SendEmail {
 }
 
 
-external class EmailEvent : ExtendableEvent {
+abstract external class EmailEvent : ExtendableEvent {
     val message: ForwardableEmailMessage
 }
 
@@ -3864,16 +3870,16 @@ external class EmailEvent : ExtendableEvent {
 typealias EmailExportedHandler<Env /* default is Any? */> = (message: ForwardableEmailMessage, env: Env, ctx: ExecutionContext) -> Any /* void | Promise<void> */
 
 
-external object String /* "cloudflare:email" */ {
-    external var _EmailMessage: Temp3
-    /* export { _EmailMessage as EmailMessage }; */
-}
+//external object String /* "cloudflare:email" */ {
+//    external var _EmailMessage: Temp3
+//    /* export { _EmailMessage as EmailMessage }; */
+//}
 
 
 // Copyright (c) 2022-2023 Cloudflare, Inc.
 // Licensed under the Apache 2.0 license found in the LICENSE file or at:
 //     https://opensource.org/licenses/Apache-2.0
-typealias Params<P : String /* default is Any? */> = Record<P, Any /* string | string[] */>
+typealias Params<T> = Record<String, Any /* string | string[] */>
 
 
 external interface EventContext<Env, P : String, Data> {
@@ -3892,7 +3898,7 @@ external interface EventContext<Env, P : String, Data> {
 }
 
 
-typealias PagesFunction<Env /* default is Any? */, Params : String /* default is Any? */, Data : Record<String, Any?> /* default is Record<String, Any?> */> = (context: EventContext<Env, Params, Data>) -> Any /* Response | Promise<Response> */
+//typealias PagesFunction<Env /* default is Any? */, Params : String /* default is Any? */, Data : Record<String, Any?> /* default is Record<String, Any?> */> = (context: EventContext<Env, Params, Data>) -> Any /* Response | Promise<Response> */
 
 
 external interface EventPluginContext<Env, P : String, Data, PluginArgs> {
@@ -3912,12 +3918,12 @@ external interface EventPluginContext<Env, P : String, Data, PluginArgs> {
 }
 
 
-typealias PagesPluginFunction<Env /* default is Any? */, Params : String /* default is Any? */, Data : Record<String, Any?> /* default is Record<String, Any?> */, PluginArgs /* default is Any? */> = (context: EventPluginContext<Env, Params, Data, PluginArgs>) -> Any /* Response | Promise<Response> */
+//typealias PagesPluginFunction<Env /* default is Any? */, Params : String /* default is Any? */, Data : Record<String, Any?> /* default is Record<String, Any?> */, PluginArgs /* default is Any? */> = (context: EventPluginContext<Env, Params, Data, PluginArgs>) -> Any /* Response | Promise<Response> */
 
 
-external object String /* "assets:*" */ {
-    external val onRequest: PagesFunction
-}
+//external object String /* "assets:*" */ {
+//    external val onRequest: PagesFunction
+//}
 
 
 // Copyright (c) 2023 Cloudflare, Inc.
@@ -3975,12 +3981,12 @@ external interface JsonWebKeyWithKid : JsonWebKey {
 // Licensed under the Apache 2.0 license found in the LICENSE file or at:
 //     https://opensource.org/licenses/Apache-2.0
 
-external object String /* "cloudflare:sockets" */ {
-    external fun _connect(address: String, options: SocketOptions = definedExternally): Socket
-
-    external fun _connect(address: SocketAddress, options: SocketOptions = definedExternally): Socket
-    /* export { _connect as connect }; */
-}
+//external object String /* "cloudflare:sockets" */ {
+//    external fun _connect(address: String, options: SocketOptions = definedExternally): Socket
+//
+//    external fun _connect(address: SocketAddress, options: SocketOptions = definedExternally): Socket
+//    /* export { _connect as connect }; */
+//}
 
 
 // Copyright (c) 2023 Cloudflare, Inc.
@@ -4030,11 +4036,11 @@ external interface DispatchNamespace {
 }
 
 
-external interface Temp1<R, R, R, R> {
-    var prototype: ReadableStream
-    /* new (underlyingSource: UnderlyingByteSource, strategy?: QueuingStrategy<Uint8Array>): ReadableStream<Uint8Array>; */
-    /* new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; */
-}
+//external interface Temp1<R, R, R, R> {
+//    var prototype: ReadableStream
+//    /* new (underlyingSource: UnderlyingByteSource, strategy?: QueuingStrategy<Uint8Array>): ReadableStream<Uint8Array>; */
+//    /* new <R = any>(underlyingSource?: UnderlyingSource<R>, strategy?: QueuingStrategy<R>): ReadableStream<R>; */
+//}
 
 
 external interface Temp2 {
@@ -4121,9 +4127,9 @@ sealed external interface ResponseInitEncodeBody {
 )
 @JsName("""(/*union*/{: ''}/*union*/)""")
 sealed external interface UnderlyingSourceType {
-    companion object {
-        val : UnderlyingSourceType
-    }
+//    companion object {
+//        val : UnderlyingSourceType
+//    }
 }
 
 
