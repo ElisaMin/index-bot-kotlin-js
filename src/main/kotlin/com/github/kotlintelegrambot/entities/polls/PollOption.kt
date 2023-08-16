@@ -7,6 +7,6 @@ import com.google.gson.annotations.SerializedName
  * https://core.telegram.org/bots/api#polloption
  */
 data class PollOption(
-    @SerializedName(PollFields.TEXT) val text: String,
-    @SerializedName(PollFields.VOTER_COUNT) val voterCount: Int,
+    @SerializedName("text") val text: String,
+    @SerializedName("voter_count") val voterCount: Int,
 )

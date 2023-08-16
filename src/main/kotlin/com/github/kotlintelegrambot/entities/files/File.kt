@@ -10,8 +10,8 @@ import com.google.gson.annotations.SerializedName
  * https://core.telegram.org/bots/api#file
  */
 data class File(
-    @SerializedName(FilesFields.fileId) val fileId: String,
-    @SerializedName(FilesFields.fileUniqueId) val fileUniqueId: String,
-    @SerializedName(FilesFields.fileSize) val fileSize: Int? = null,
-    @SerializedName(FilesFields.filePath) val filePath: String? = null,
+    @SerializedName("file_id") val fileId: String,
+    @SerializedName("file_unique_id") val fileUniqueId: String,
+    @SerializedName("file_size") val fileSize: Int? = null,
+    @SerializedName("file_path") val filePath: String? = null,
 )

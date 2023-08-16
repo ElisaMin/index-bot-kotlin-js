@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
  * https://core.telegram.org/bots/api#poll_answer
  */
 data class PollAnswer(
-    @SerializedName(PollFields.POLL_ID) val pollId: String,
-    @SerializedName(PollFields.USER) val user: User,
-    @SerializedName(PollFields.OPTION_IDS) val optionIds: List<Int>,
+    @SerializedName("poll_id") val pollId: String,
+    @SerializedName("user") val user: User,
+    @SerializedName("option_ids") val optionIds: List<Int>,
 )

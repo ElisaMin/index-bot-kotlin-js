@@ -7,8 +7,8 @@ import com.google.gson.annotations.SerializedName
  * https://core.telegram.org/bots/api#chatphoto
  */
 data class ChatPhoto(
-    @SerializedName(FilesFields.smallFileId) val smallFileId: String,
-    @SerializedName(FilesFields.smallFileUniqueId) val smallFileUniqueId: String,
-    @SerializedName(FilesFields.bigFileId) val bigFileId: String,
-    @SerializedName(FilesFields.bigFileUniqueId) val bigFileUniqueId: String,
+    @SerializedName("small_file_id") val smallFileId: String,
+    @SerializedName("small_file_unique_id") val smallFileUniqueId: String,
+    @SerializedName("big_file_id") val bigFileId: String,
+    @SerializedName("big_file_unique_id") val bigFileUniqueId: String,
 )

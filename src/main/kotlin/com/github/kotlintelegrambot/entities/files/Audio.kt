@@ -7,13 +7,13 @@ import com.google.gson.annotations.SerializedName
  * https://core.telegram.org/bots/api#audio
  */
 data class Audio(
-    @SerializedName(FilesFields.fileId) val fileId: String,
-    @SerializedName(FilesFields.fileUniqueId) val fileUniqueId: String,
-    @SerializedName(FilesFields.duration) val duration: Int,
-    @SerializedName(FilesFields.performer) val performer: String? = null,
-    @SerializedName(FilesFields.title) val title: String? = null,
-    @SerializedName(FilesFields.mimeType) val mimeType: String? = null,
-    @SerializedName(FilesFields.fileSize) val fileSize: Int? = null,
-    @SerializedName(FilesFields.thumb) val thumb: PhotoSize? = null,
-    @SerializedName(FilesFields.fileName) val fileName: String? = null,
+    @SerializedName("file_id") val fileId: String,
+    @SerializedName("file_unique_id") val fileUniqueId: String,
+    @SerializedName("duration") val duration: Int,
+    @SerializedName("performer") val performer: String? = null,
+    @SerializedName("title") val title: String? = null,
+    @SerializedName("mime_type") val mimeType: String? = null,
+    @SerializedName("file_size") val fileSize: Int? = null,
+    @SerializedName("thumb") val thumb: PhotoSize? = null,
+    @SerializedName("file_name") val fileName: String? = null,
 )

@@ -10,11 +10,11 @@ import com.google.gson.annotations.SerializedName
  * https://core.telegram.org/bots/api#keyboardbutton
  */
 data class KeyboardButton(
-    @SerializedName(KeyboardFields.TEXT) val text: String,
-    @SerializedName(KeyboardFields.REQUEST_CONTACT) val requestContact: Boolean? = null,
-    @SerializedName(KeyboardFields.REQUEST_LOCATION) val requestLocation: Boolean? = null,
-    @SerializedName(KeyboardFields.REQUEST_POLL) val requestPoll: KeyboardButtonPollType? = null,
-    @SerializedName(KeyboardFields.WEB_APP) val webApp: WebAppInfo? = null,
+    @SerializedName("text") val text: String,
+    @SerializedName("request_contact") val requestContact: Boolean? = null,
+    @SerializedName("request_location") val requestLocation: Boolean? = null,
+    @SerializedName("request_poll") val requestPoll: KeyboardButtonPollType? = null,
+    @SerializedName("web_app") val webApp: WebAppInfo? = null,
 )
 
 /**
@@ -22,5 +22,5 @@ data class KeyboardButton(
  * https://core.telegram.org/bots/api#keyboardbuttonpolltype
  */
 data class KeyboardButtonPollType(
-    @SerializedName(KeyboardFields.TYPE) val type: PollType? = null,
+    @SerializedName("type") val type: PollType? = null,
 )

@@ -7,8 +7,8 @@ import com.google.gson.annotations.SerializedName
  * https://core.telegram.org/bots/api#dice
  */
 data class Dice(
-    @SerializedName(DiceFields.EMOJI) val emoji: DiceEmoji,
-    @SerializedName(DiceFields.VALUE) val value: Int,
+    @SerializedName("emoji") val emoji: DiceEmoji,
+    @SerializedName("value") val value: Int,
 )
 
 sealed class DiceEmoji {
