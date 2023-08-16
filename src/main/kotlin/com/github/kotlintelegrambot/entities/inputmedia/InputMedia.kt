@@ -1,7 +1,6 @@
 package com.github.kotlintelegrambot.entities.inputmedia
 
 import com.github.kotlintelegrambot.entities.TelegramFile
-import com.google.gson.annotations.SerializedName
 
 /**
  * Represents the content of a media message to be sent.
@@ -11,6 +10,7 @@ sealed class InputMedia {
     abstract val type: String
     abstract val media: TelegramFile
     abstract val caption: String?
+    @JsName("parse_mode")
     abstract val parseMode: String?
 }
 
@@ -37,11 +37,10 @@ class MediaGroup private constructor(val medias: Array<out GroupableMedia>) {
  * https://core.telegram.org/bots/api#inputmediaphoto
  */
 data class InputMediaPhoto(
-    @SerializedName("media") override val media: TelegramFile,
-    @SerializedName("caption") override val caption: String? = null,
-    @SerializedName("parse_mode") override val parseMode: String? = null,
+    override val media: TelegramFile,
+    override val caption: String? = null,
+    override val parseMode: String? = null,
 ) : InputMedia(), GroupableMedia {
-    @SerializedName("type")
     override val type: String = "photo"
 }
 
@@ -50,16 +49,15 @@ data class InputMediaPhoto(
  * https://core.telegram.org/bots/api#inputmediavideo
  */
 data class InputMediaVideo(
-    @SerializedName("media") override val media: TelegramFile,
-    @SerializedName("caption") override val caption: String? = null,
-    @SerializedName("parse_mode") override val parseMode: String? = null,
+    override val media: TelegramFile,
+    override val caption: String? = null,
+    override val parseMode: String? = null,
     val thumb: TelegramFile.ByFile? = null,
     val width: Int? = null,
     val height: Int? = null,
     val duration: Int? = null,
     val supports_streaming: Boolean? = null,
 ) : InputMedia(), GroupableMedia {
-    @SerializedName("type")
     override val type: String = "video"
 }
 
@@ -68,15 +66,14 @@ data class InputMediaVideo(
  * https://core.telegram.org/bots/api#inputmediaanimation
  */
 data class InputMediaAnimation(
-    @SerializedName("media") override val media: TelegramFile,
-    @SerializedName("caption") override val caption: String? = null,
-    @SerializedName("parse_mode") override val parseMode: String? = null,
+    override val media: TelegramFile,
+    override val caption: String? = null,
+    override val parseMode: String? = null,
     val thumb: TelegramFile.ByFile? = null,
     val width: Int? = null,
     val height: Int? = null,
     val duration: Int? = null,
 ) : InputMedia() {
-    @SerializedName("type")
     override val type: String = "animation"
 }
 
@@ -85,15 +82,14 @@ data class InputMediaAnimation(
  * https://core.telegram.org/bots/api#inputmediaaudio
  */
 data class InputMediaAudio(
-    @SerializedName("media") override val media: TelegramFile,
-    @SerializedName("caption") override val caption: String? = null,
-    @SerializedName("parse_mode") override val parseMode: String? = null,
+    override val media: TelegramFile,
+    override val caption: String? = null,
+    override val parseMode: String? = null,
     val thumb: TelegramFile.ByFile? = null,
     val duration: Int? = null,
     val performer: String? = null,
     val title: String? = null,
 ) : InputMedia(), GroupableMedia {
-    @SerializedName("type")
     override val type: String = "audio"
 }
 
@@ -102,12 +98,11 @@ data class InputMediaAudio(
  * https://core.telegram.org/bots/api#inputmediadocument
  */
 data class InputMediaDocument(
-    @SerializedName("media") override val media: TelegramFile,
-    @SerializedName("caption") override val caption: String? = null,
-    @SerializedName("parse_mode") override val parseMode: String? = null,
+    override val media: TelegramFile,
+    override val caption: String? = null,
+    override val parseMode: String? = null,
     val thumb: TelegramFile.ByFile? = null,
     val disable_content_type_detection: Boolean? = null,
 ) : InputMedia(), GroupableMedia {
-    @SerializedName("type")
     override val type: String = "document"
 }

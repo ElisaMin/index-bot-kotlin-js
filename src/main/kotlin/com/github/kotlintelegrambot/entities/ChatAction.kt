@@ -1,38 +1,37 @@
 package com.github.kotlintelegrambot.entities
 
-import com.google.gson.annotations.SerializedName
 
 enum class ChatAction {
-    @SerializedName("typing")
+    @JsName("typing")
     TYPING,
 
-    @SerializedName("upload_photo")
+    @JsName("upload_photo")
     UPLOAD_PHOTO,
 
-    @SerializedName("record_video")
+    @JsName("record_video")
     RECORD_VIDEO,
 
-    @SerializedName("upload_video")
+    @JsName("upload_video")
     UPLOAD_VIDEO,
 
-    @SerializedName("record_audio")
+    @JsName("record_audio")
     RECORD_AUDIO,
 
-    @SerializedName("upload_audio")
+    @JsName("upload_audio")
     UPLOAD_AUDIO,
 
-    @SerializedName("upload_document")
+    @JsName("upload_document")
     UPLOAD_DOCUMENT,
 
-    @SerializedName("find_location")
+    @JsName("find_location")
     FIND_LOCATION,
 
-    @SerializedName("record_video_note")
+    @JsName("record_video_note")
     RECORD_VIDEO_NOTE,
 
-    @SerializedName("upload_video_note")
+    @JsName("upload_video_note")
     UPLOAD_VIDEO_NOTE,
 
-    @SerializedName("choose_sticker")
+    @JsName("choose_sticker")
     CHOOSE_STICKER,
 }

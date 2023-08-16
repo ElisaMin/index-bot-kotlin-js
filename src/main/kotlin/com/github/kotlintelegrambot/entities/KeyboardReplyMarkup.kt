@@ -24,7 +24,12 @@ data class KeyboardReplyMarkup(
             oneTimeKeyboard: Boolean = false,
             selective: Boolean? = null,
         ): KeyboardReplyMarkup {
-            return KeyboardReplyMarkup(keyboard.map { it.map { KeyboardButton(text = it) } }, resizeKeyboard, oneTimeKeyboard, selective)
+            return KeyboardReplyMarkup(
+                keyboard.map { it.map { KeyboardButton(text = it) } },
+                resizeKeyboard,
+                oneTimeKeyboard,
+                selective
+            )
         }
     }
 }

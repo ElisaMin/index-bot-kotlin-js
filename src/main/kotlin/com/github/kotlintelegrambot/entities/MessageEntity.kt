@@ -1,6 +1,5 @@
 package com.github.kotlintelegrambot.entities
 
-import com.google.gson.annotations.SerializedName
 
 /**
  * Represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.
@@ -14,52 +13,52 @@ data class MessageEntity(
     val language: String? = null,
 ) {
     enum class Type {
-        @SerializedName("mention")
+        @JsName("mention")
         MENTION,
 
-        @SerializedName("hashtag")
+        @JsName("hashtag")
         HASHTAG,
 
-        @SerializedName("cashtag")
+        @JsName("cashtag")
         CASHTAG,
 
-        @SerializedName("bot_command")
+        @JsName("bot_command")
         BOT_COMMAND,
 
-        @SerializedName("url")
+        @JsName("url")
         URL,
 
-        @SerializedName("email")
+        @JsName("email")
         EMAIL,
 
-        @SerializedName("phone_number")
+        @JsName("phone_number")
         PHONE_NUMBER,
 
-        @SerializedName("bold")
+        @JsName("bold")
         BOLD,
 
-        @SerializedName("italic")
+        @JsName("italic")
         ITALIC,
 
-        @SerializedName("underline")
+        @JsName("underline")
         UNDERLINE,
 
-        @SerializedName("strikethrough")
+        @JsName("strikethrough")
         STRIKETHROUGH,
 
-        @SerializedName("code")
+        @JsName("code")
         CODE,
 
-        @SerializedName("pre")
+        @JsName("pre")
         PRE,
 
-        @SerializedName("text_link")
+        @JsName("text_link")
         TEXT_LINK,
 
-        @SerializedName("text_mention")
+        @JsName("text_mention")
         TEXT_MENTION,
 
-        @SerializedName("spoiler")
+        @JsName("spoiler")
         SPOILER,
     }
 }

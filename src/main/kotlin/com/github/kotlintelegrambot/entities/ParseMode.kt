@@ -1,15 +1,14 @@
 package com.github.kotlintelegrambot.entities
 
-import com.google.gson.annotations.SerializedName
 
 // TODO: Remove modeName attribute and stop using it as a serialization approach for this enum
 enum class ParseMode(val modeName: String) {
-    @SerializedName("Markdown")
+    @JsName("Markdown")
     MARKDOWN("Markdown"),
 
-    @SerializedName("HTML")
+    @JsName("HTML")
     HTML("HTML"),
 
-    @SerializedName("MarkdownV2")
+    @JsName("MarkdownV2")
     MARKDOWN_V2("MarkdownV2"),
 }

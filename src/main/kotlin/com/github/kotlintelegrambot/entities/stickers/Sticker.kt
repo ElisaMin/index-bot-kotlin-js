@@ -1,7 +1,6 @@
 package com.github.kotlintelegrambot.entities.stickers
 
 import com.github.kotlintelegrambot.entities.files.PhotoSize
-import com.google.gson.annotations.SerializedName
 
 /**
  * Represents a sticker.
@@ -15,7 +14,7 @@ data class Sticker(
     val is_animated: Boolean,
     val thumb: PhotoSize? = null,
     val emoji: String?,
-    @SerializedName("set_name")val setName: String? = null,
+    @JsName("set_name") val setName: String? = null,
     val mask_position: MaskPosition? = null,
     val file_size: Int? = null,
 )

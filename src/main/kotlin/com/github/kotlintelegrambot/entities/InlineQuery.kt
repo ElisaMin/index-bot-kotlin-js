@@ -1,6 +1,5 @@
 package com.github.kotlintelegrambot.entities
 
-import com.google.gson.annotations.SerializedName
 
 /**
  * Represents an incoming inline query. When the user sends an empty query, your bot could return
@@ -25,18 +24,19 @@ data class InlineQuery(
 ) {
 
     enum class ChatType {
-        @SerializedName("sender")
+        @JsName("sender")
         SENDER, // private chat with the inline query sender
-        @SerializedName("private")
+
+        @JsName("private")
         PRIVATE,
 
-        @SerializedName("group")
+        @JsName("group")
         GROUP,
 
-        @SerializedName("supergroup")
+        @JsName("supergroup")
         SUPERGROUP,
 
-        @SerializedName("channel")
+        @JsName("channel")
         CHANNEL,
     }
 }

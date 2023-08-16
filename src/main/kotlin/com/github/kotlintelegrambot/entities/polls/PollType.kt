@@ -1,11 +1,10 @@
 package com.github.kotlintelegrambot.entities.polls
 
-import com.google.gson.annotations.SerializedName
 
 enum class PollType {
-    @SerializedName("quiz")
+    @JsName("quiz")
     QUIZ,
 
-    @SerializedName("regular")
+    @JsName("regular")
     REGULAR,
 }
