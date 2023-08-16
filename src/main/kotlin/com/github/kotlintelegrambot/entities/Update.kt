@@ -7,7 +7,7 @@ import com.github.kotlintelegrambot.entities.polls.PollAnswer
 import com.github.kotlintelegrambot.types.ConsumableObject
 import com.github.kotlintelegrambot.types.DispatchableObject
 
-data class Update constructor(
+data class Update(
     val update_id: Long,
     val message: Message? = null,
     val edited_message: Message? = null,

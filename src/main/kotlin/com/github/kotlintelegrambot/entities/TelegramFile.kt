@@ -1,6 +1,7 @@
 package com.github.kotlintelegrambot.entities
 
-import java.io.File
+import com.cloudflare.workers.types.File
+
 
 sealed class TelegramFile {
     data class ByFileId(val fileId: String) : TelegramFile()

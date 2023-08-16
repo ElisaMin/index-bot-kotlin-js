@@ -14,32 +14,32 @@ data class Dice(
 sealed class DiceEmoji {
     abstract val emojiValue: String
 
-    object Dice : DiceEmoji() {
+    data object Dice : DiceEmoji() {
         override val emojiValue: String
             get() = "🎲"
     }
 
-    object Dartboard : DiceEmoji() {
+    data object Dartboard : DiceEmoji() {
         override val emojiValue: String
             get() = "🎯"
     }
 
-    object Basketball : DiceEmoji() {
+    data object Basketball : DiceEmoji() {
         override val emojiValue: String
             get() = "🏀"
     }
 
-    object Football : DiceEmoji() {
+    data object Football : DiceEmoji() {
         override val emojiValue: String
             get() = "⚽️"
     }
 
-    object SlotMachine : DiceEmoji() {
+    data object SlotMachine : DiceEmoji() {
         override val emojiValue: String
             get() = "🎰"
     }
 
-    object Bowling : DiceEmoji() {
+    data object Bowling : DiceEmoji() {
         override val emojiValue: String
             get() = "🎳"
     }

@@ -1,7 +1,6 @@
 package com.github.kotlintelegrambot.entities.payments
 
 import com.github.kotlintelegrambot.entities.User
-import java.math.BigInteger
 
 /**
  *
@@ -20,7 +19,7 @@ data class PreCheckoutQuery(
     val id: String,
     val from: User,
     val currency: String,
-    val total_amount: BigInteger,
+    val total_amount: Long,
     val invoice_payload: String,
     val shipping_option_id: String?,
     val order_info: OrderInfo?,
