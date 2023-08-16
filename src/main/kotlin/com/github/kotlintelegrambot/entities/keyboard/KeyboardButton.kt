@@ -1,7 +1,6 @@
 package com.github.kotlintelegrambot.entities.keyboard
 
 import com.github.kotlintelegrambot.entities.polls.PollType
-import com.google.gson.annotations.SerializedName
 
 /**
  * Represents one button of the reply keyboard.
@@ -10,11 +9,11 @@ import com.google.gson.annotations.SerializedName
  * https://core.telegram.org/bots/api#keyboardbutton
  */
 data class KeyboardButton(
-    @SerializedName("text") val text: String,
-    @SerializedName("request_contact") val requestContact: Boolean? = null,
-    @SerializedName("request_location") val requestLocation: Boolean? = null,
-    @SerializedName("request_poll") val requestPoll: KeyboardButtonPollType? = null,
-    @SerializedName("web_app") val webApp: WebAppInfo? = null,
+    val text: String,
+    val request_contact: Boolean? = null,
+    val request_location: Boolean? = null,
+    val request_poll: KeyboardButtonPollType? = null,
+    val web_app: WebAppInfo? = null,
 )
 
 /**
@@ -22,5 +21,5 @@ data class KeyboardButton(
  * https://core.telegram.org/bots/api#keyboardbuttonpolltype
  */
 data class KeyboardButtonPollType(
-    @SerializedName("type") val type: PollType? = null,
+    val type: PollType? = null,
 )

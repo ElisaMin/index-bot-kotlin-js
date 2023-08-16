@@ -1,14 +1,12 @@
 package com.github.kotlintelegrambot.entities.dice
 
-import com.google.gson.annotations.SerializedName
-
 /**
  * Represents an animated emoji that displays a random value.
  * https://core.telegram.org/bots/api#dice
  */
 data class Dice(
-    @SerializedName("emoji") val emoji: DiceEmoji,
-    @SerializedName("value") val value: Int,
+    val emoji: DiceEmoji,
+    val value: Int,
 )
 
 sealed class DiceEmoji {

@@ -8,14 +8,14 @@ import com.google.gson.annotations.SerializedName
  * https://core.telegram.org/bots/api#sticker
  */
 data class Sticker(
-    @SerializedName("file_id") val fileId: String,
-    @SerializedName("file_unique_id") val fileUniqueId: String,
-    @SerializedName("width") val width: Int,
-    @SerializedName("height") val height: Int,
-    @SerializedName("is_animated") val isAnimated: Boolean,
-    @SerializedName("thumb") val thumb: PhotoSize? = null,
-    @SerializedName("emoji") val emoji: String?,
+    val file_id: String,
+    val file_unique_id: String,
+    val width: Int,
+    val height: Int,
+    val is_animated: Boolean,
+    val thumb: PhotoSize? = null,
+    val emoji: String?,
     @SerializedName("set_name")val setName: String? = null,
-    @SerializedName("mask_position") val maskPosition: MaskPosition? = null,
-    @SerializedName("file_size") val fileSize: Int? = null,
+    val mask_position: MaskPosition? = null,
+    val file_size: Int? = null,
 )
