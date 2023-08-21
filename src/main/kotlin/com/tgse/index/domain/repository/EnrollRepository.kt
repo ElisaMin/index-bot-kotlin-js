@@ -1,6 +1,6 @@
 package com.tgse.index.domain.repository
 
-import com.pengrad.telegrambot.model.User
+import com.github.kotlintelegrambot.entities.User
 import com.tgse.index.domain.service.EnrollService
 
 interface EnrollRepository {

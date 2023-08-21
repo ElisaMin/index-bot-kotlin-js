@@ -1,8 +1,8 @@
 package com.tgse.index.area.msgFactory
 
-import com.pengrad.telegrambot.model.request.InlineKeyboardButton
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup
-import com.pengrad.telegrambot.model.request.ParseMode
+import com.github.kotlintelegrambot.entities.request.InlineKeyboardButton
+import com.github.kotlintelegrambot.entities.request.InlineKeyboardMarkup
+import com.github.kotlintelegrambot.entities.request.ParseMode
 import com.pengrad.telegrambot.request.EditMessageText
 import com.pengrad.telegrambot.request.SendMessage
 import com.tgse.index.infrastructure.provider.BotProvider

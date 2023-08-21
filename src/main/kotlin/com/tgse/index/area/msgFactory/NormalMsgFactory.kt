@@ -1,50 +1,55 @@
+@file:Suppress("NOTHING_TO_INLINE")
 package com.tgse.index.area.msgFactory
 
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup
-import com.pengrad.telegrambot.model.request.ParseMode
-import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup
-import com.pengrad.telegrambot.request.EditMessageReplyMarkup
-import com.pengrad.telegrambot.request.SendMessage
+import com.github.kotlintelegrambot.entities.*
+import com.github.kotlintelegrambot.entities.keyboard.InlineKeyboardButton
+import com.github.kotlintelegrambot.entities.keyboard.KeyboardButton
+import com.github.kotlintelegrambot.network.*
 import com.tgse.index.MismatchException
+import com.tgse.index.domain.repository.nick
 import com.tgse.index.domain.service.BlackListService
 import com.tgse.index.infrastructure.provider.BotProvider
 import com.tgse.index.domain.service.ClassificationService
 import com.tgse.index.domain.service.ReplyService
-import org.springframework.stereotype.Component
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import me.heizi.workers.bot.index.BotApiProvider
+import me.heizi.workers.bot.index.CustomReplies
+import me.heizi.workers.bot.index.contextGlobal
 
-@Component
+inline fun String.toTgMessage(chatId: dynamic) = SendMessage(chatId, this)
+
+inline fun String.factoryChain() = FactoryMessage(this)
+
+
+value class FactoryMessage(
+    val msg:String
+) {
+    suspend inline fun updateBotName(crossinline botName: suspend  ()->String) = botName().let { msg.replace("\\{bot.username}".toRegex(), it) }
+        .factoryChain()
+
+    override fun toString() = msg
+}
+
+fun MessageFactories.cleanDirectsKeyboard(chatId: Long, messageId: Long) = run {
+    EditMessageReplyMarkup(chatId.toString(), message_id =  messageId, reply_markup = InlineKeyboardMarkup(emptyList()))
+}
+fun MessageFactories.dailyMsg(chatId: Long, dailyIncreaseOfUser: Int, dailyActiveOfUser: Int,countOfUser: Int, countOfRecord: Long) = run {
+    SendMessage(chatId.toString(), CustomReplies { CustomReplies::statisticsDaily }
+        .replace("\\{dailyIncreaseOfUser\\}".toRegex(), dailyIncreaseOfUser.toString())
+        .replace("\\{dailyActiveOfUser\\}".toRegex(), dailyActiveOfUser.toString())
+        .replace("\\{countOfUser\\}".toRegex(), countOfUser.toString())
+        .replace("\\{countOfRecord\\}".toRegex(), countOfRecord.toString()),
+        parse_mode = ParseMode.HTML
+    )
+}
 class NormalMsgFactory(
     private val classificationService: ClassificationService,
     override val replyService: ReplyService,
     override val botProvider: BotProvider
 ) : BaseMsgFactory(replyService, botProvider) {
 
-    fun makeStartMsg(chatId: Long): SendMessage {
-        val content = replyService.messages["start"]!!.replace("\\{bot.username\\}".toRegex(), botProvider.username)
-        val keyboard = makeReplyKeyboardMarkup()
-        return SendMessage(chatId, content).disableWebPagePreview(false).replyMarkup(keyboard)
-    }
-
-    fun makeClearMarkupMsg(chatId: Long, messageId: Int): EditMessageReplyMarkup {
-        return EditMessageReplyMarkup(chatId, messageId).replyMarkup(InlineKeyboardMarkup())
-    }
-
-    fun makeStatisticsDailyReplyMsg(
-        chatId: Long,
-        dailyIncreaseOfUser: Long,
-        dailyActiveOfUser: Long,
-        countOfUser: Long,
-        countOfRecord: Long
-    ): SendMessage {
-        return SendMessage(
-            chatId,
-            replyService.messages["statistics-daily"]!!
-                .replace("\\{dailyIncreaseOfUser\\}".toRegex(), dailyIncreaseOfUser.toString())
-                .replace("\\{dailyActiveOfUser\\}".toRegex(), dailyActiveOfUser.toString())
-                .replace("\\{countOfUser\\}".toRegex(), countOfUser.toString())
-                .replace("\\{countOfRecord\\}".toRegex(), countOfRecord.toString())
-        ).parseMode(ParseMode.HTML)
-    }
 
     fun makeBlacklistJoinedReplyMsg(
         chatId: Long,
@@ -64,7 +69,7 @@ class NormalMsgFactory(
     fun makeBlacklistExistReplyMsg(chatId: Long, replyType: String, type: String): SendMessage {
         return SendMessage(
             chatId,
-            replyService.messages[replyType]!!.replace("\\{type\\}".toRegex(), type)
+            replyService.messages[replyType]!!.replace("\\{type}".toRegex(), type)
         )
     }
 
@@ -123,4 +128,13 @@ class NormalMsgFactory(
         keyboard.selective(true)
         return keyboard
     }
+}
+
+
+//@Suppress("NOTHING_TO_INLINE")
+object MessageFactories {
+    inline val bot get() = contextGlobal.botCurrent
+    inline val keywords get() = contextGlobal.botCurrent.direct
+    inline val api:BotApiProvider get() = TODO()
+
 }

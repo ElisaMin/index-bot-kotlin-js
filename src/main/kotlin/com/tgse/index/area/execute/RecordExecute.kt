@@ -80,13 +80,14 @@ class RecordExecute(
         val callbackDataVal = statusCallbackData.replace("update:", "").split("&")
         val field = callbackDataVal[0]
         val uuid = callbackDataVal[1]
-        val msgContent = request.update.message().text()
+        val msgContent = request.update.message.text()
         try {
             val record = recordService.getRecord(uuid)!!
             val newRecord = when (field) {
                 "link" -> {
                     // 获取收录内容
-                    val username = request.update.message().text().replaceFirst("@", "").replaceFirst("https://t.me/", "")
+                    val username =
+                        request.update.message.text().replaceFirst("@", "").replaceFirst("https://t.me/", "")
                     if (record.username == username) throw MismatchException("链接未发生改变")
                     val telegramMod = telegramService.getTelegramMod(username)
                     // 收录对象黑名单检测
@@ -109,16 +110,19 @@ class RecordExecute(
                         is TelegramService.TelegramBot -> TelegramService.TelegramModType.Bot
                         else -> throw MismatchException("链接不存在")
                     }
-                    if(record.type != type) throw  throw MismatchException("类型不匹配")
+                    if (record.type != type) throw throw MismatchException("类型不匹配")
                     record.copy(username = username)
                 }
+
                 "title" -> {
                     if (msgContent.length > 26) throw MismatchException("标题太长，修改失败")
                     record.copy(title = msgContent)
                 }
+
                 "about" -> {
                     record.copy(description = msgContent)
                 }
+
                 "tags" -> {
                     val tags = mutableListOf<String>()
                     """(?<=#)[^\s#]+""".toRegex().findAll(msgContent).forEach {
@@ -128,6 +132,7 @@ class RecordExecute(
                     }
                     record.copy(tags = tags)
                 }
+
                 else -> throw RuntimeException("record request")
             }
             recordService.updateRecord(newRecord)
@@ -142,7 +147,8 @@ class RecordExecute(
                     val msg = normalMsgFactory.makeExceptionMsg(request.chatId!!, e)
                     botProvider.send(msg)
                 }
-                else -> throw  e
+
+                else -> throw e
             }
         }
     }

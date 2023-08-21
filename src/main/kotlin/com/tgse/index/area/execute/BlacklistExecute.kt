@@ -7,8 +7,6 @@ import com.tgse.index.domain.service.BlackListService
 import com.tgse.index.domain.service.EnrollService
 import com.tgse.index.domain.service.RequestService
 import com.tgse.index.domain.service.TelegramService
-import org.springframework.stereotype.Component
-import java.util.*
 
 @Component
 class BlacklistExecute(

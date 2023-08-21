@@ -1,9 +1,8 @@
 package com.tgse.index.domain.service
 
 import com.tgse.index.domain.repository.ReplyRepository
-import org.springframework.stereotype.Service
 
-@Service
+
 class ReplyService(
     private val replyRepository: ReplyRepository
 ) {

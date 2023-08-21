@@ -2,11 +2,8 @@ package com.tgse.index.domain.service
 
 import com.tgse.index.domain.repository.RecordRepository
 import com.tgse.index.domain.repository.TelegramRepository
-import org.slf4j.LoggerFactory
-import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.stereotype.Service
 
-@Service
+
 class SyncMembersService(
     private val recordRepository: RecordRepository,
     private val telegramRepository: TelegramRepository

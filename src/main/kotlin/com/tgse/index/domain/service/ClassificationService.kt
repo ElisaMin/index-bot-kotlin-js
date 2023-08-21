@@ -1,9 +1,8 @@
 package com.tgse.index.domain.service
 
 import com.tgse.index.domain.repository.ClassificationRepository
-import org.springframework.stereotype.Service
 
-@Service
+
 class ClassificationService(
     private val classificationRepository: ClassificationRepository
 ) {

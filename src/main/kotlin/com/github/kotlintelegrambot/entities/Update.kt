@@ -20,7 +20,10 @@ data class Update(
     val pre_checkout_query: PreCheckoutQuery? = null,
     val poll: Poll? = null,
     val poll_answer: PollAnswer? = null,
-) : DispatchableObject, ConsumableObject()
+) : DispatchableObject, ConsumableObject() {
+    @Deprecated("Use callback_query instead", ReplaceWith("callback_query"))
+    inline val callbackQuery  get() = callback_query
+}
 
 /**
  * Generate list of key-value from start payload.

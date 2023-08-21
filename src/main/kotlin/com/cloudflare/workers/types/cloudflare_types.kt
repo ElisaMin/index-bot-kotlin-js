@@ -1,4 +1,5 @@
-@file:JsModule("@cloudflare/workers-types")
+//@file:JsModule("@cloudflare/workers-types")
+//@file:JsNonModule()
 @file:Suppress(
     "NON_EXTERNAL_DECLARATION_IN_INAPPROPRIATE_FILE",
 )
@@ -17,6 +18,29 @@ import kotlin.js.Promise
 external interface Record<K, V> {
     operator fun get(key: K): V?
 }
+
+/**
+ * declare function fetch(
+ *   input: RequestInfo,
+ *   init?: RequestInit<RequestInitCfProperties>
+ * ): Promise<Response>;
+ */
+external fun fetch(
+    input: RequestInfo,
+    init: RequestInit? = definedExternally,
+):Promise<Response>
+external fun fetch(
+    input: String,
+    init: RequestInit? = definedExternally,
+):Promise<Response>
+external fun fetch(
+    input: URL,
+    init: RequestInit? = definedExternally,
+):Promise<Response>
+//external fun fetch(
+//    input: RequestInfo,
+//    init: dynamic? = definedExternally,
+//):Promise<Response>
 
 /*! *****************************************************************************
 Copyright (c) Cloudflare. All rights reserved.
@@ -427,7 +451,7 @@ external interface TestController {
 }
 
 
-external interface ExecutionContext {
+external class ExecutionContext {
     fun waitUntil(promise: Promise<Any?>): Unit
     fun passThroughOnException(): Unit
 }
@@ -1527,26 +1551,26 @@ external interface Body {
 }
 
 
-abstract external class Response(body: BodyInit? = definedExternally, init: ResponseInit = definedExternally) : Body {
-
-    fun clone(): Response
-    val status: Double
-    val statusText: String
-    val headers: Headers
-    val ok: Boolean
-    val redirected: Boolean
-    val url: String
-    val webSocket: WebSocket?
-    val cf: Any?
-
-    companion object {
-        fun redirect(url: String, status: Double = definedExternally): Response
-        fun json(any: Any?, maybeInit: ResponseInit = definedExternally): Response
-
-        fun json(any: Any?, maybeInit: Response = definedExternally): Response
-    }
-
-}
+//abstract external class Response(body: BodyInit? = definedExternally, init: ResponseInit = definedExternally) : Body {
+//
+//    fun clone(): Response
+//    val status: Double
+//    val statusText: String
+//    val headers: Headers
+//    val ok: Boolean
+//    val redirected: Boolean
+//    val url: String
+//    val webSocket: WebSocket?
+//    val cf: Any?
+//
+//    companion object {
+//        fun redirect(url: String, status: Double = definedExternally): Response
+//        fun json(any: Any?, maybeInit: ResponseInit = definedExternally): Response
+//
+//        fun json(any: Any?, maybeInit: Response = definedExternally): Response
+//    }
+//
+//}
 
 
 external interface ResponseInit {
@@ -2419,7 +2443,7 @@ external interface UnsafeTraceMetrics {
 external class URL {
     constructor (url: String, base: String = definedExternally)
 
-    constructor (url: String, base: URL = definedExternally)
+//    constructor (url: String, base: URL = definedExternally)
 
     constructor (url: URL, base: String = definedExternally)
 

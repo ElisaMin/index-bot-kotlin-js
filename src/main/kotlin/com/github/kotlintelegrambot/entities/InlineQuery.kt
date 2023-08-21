@@ -23,6 +23,7 @@ data class InlineQuery(
     val chat_type: ChatType? = null,
 ) {
 
+
     enum class ChatType {
         @JsName("sender")
         SENDER, // private chat with the inline query sender

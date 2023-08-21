@@ -13,4 +13,7 @@ data class User(
     val can_join_groups: Boolean? = null,
     val can_read_all_group_messages: Boolean? = null,
     val supports_inline_queries: Boolean? = null,
-)
+) {
+    inline val firstName: String get() = first_name
+    inline val lastName: String? get() = last_name
+}

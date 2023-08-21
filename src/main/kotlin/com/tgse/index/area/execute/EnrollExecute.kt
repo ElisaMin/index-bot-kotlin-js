@@ -2,8 +2,10 @@ package com.tgse.index.area.execute
 
 import com.tgse.index.MismatchException
 import com.tgse.index.area.Bulletin
+import com.tgse.index.area.msgFactory.MessageFactories
 import com.tgse.index.area.msgFactory.NormalMsgFactory
 import com.tgse.index.area.msgFactory.RecordMsgFactory
+import com.tgse.index.area.msgFactory.cleanDirectsKeyboard
 import com.tgse.index.infrastructure.provider.BotProvider
 import com.tgse.index.domain.service.AwaitStatusService
 import com.tgse.index.domain.service.EnrollService
@@ -74,7 +76,7 @@ class EnrollExecute(
                 // 提交信息
                 enrollService.submitEnroll(enroll.uuid)
                 awaitStatusService.clearAwaitStatus(request.chatId!!)
-                val editMsg = normalMsgFactory.makeClearMarkupMsg(request.chatId!!, request.messageId!!)
+                val editMsg = MessageFactories.cleanDirectsKeyboard(request.chatId!!, request.messageId!!.toLong())
                 botProvider.send(editMsg)
                 val msg = normalMsgFactory.makeReplyMsg(request.chatId!!, "enroll-submit")
                 botProvider.send(msg)
@@ -128,7 +130,7 @@ class EnrollExecute(
         val callbackDataVal = statusCallbackData.replace("enroll:", "").replace("approve:", "").split("&")
         val field = callbackDataVal[0]
         val uuid = callbackDataVal[1]
-        val msgContent = request.update.message().text()
+        val msgContent = request.update.message.text()
         try {
             val enroll = enrollService.getEnroll(uuid)!!
             val newEnroll = when (field) {
@@ -136,9 +138,11 @@ class EnrollExecute(
                     if (msgContent.length > 26) throw MismatchException("标题太长，修改失败")
                     enroll.copy(title = msgContent)
                 }
+
                 "about" -> {
                     enroll.copy(description = msgContent)
                 }
+
                 "tags" -> {
                     val tags = mutableListOf<String>()
                     """(?<=#)[^\s#]+""".toRegex().findAll(msgContent).forEach {
@@ -149,6 +153,7 @@ class EnrollExecute(
                     if (tags.size > 7) throw MismatchException("标签过多，请控制在7个以内")
                     enroll.copy(tags = tags)
                 }
+
                 else -> throw RuntimeException("error request")
             }
             enrollService.updateEnroll(newEnroll)
@@ -166,7 +171,8 @@ class EnrollExecute(
                     val msg = normalMsgFactory.makeExceptionMsg(request.chatId!!, e)
                     botProvider.send(msg)
                 }
-                else -> throw  e
+
+                else -> throw e
             }
         }
     }

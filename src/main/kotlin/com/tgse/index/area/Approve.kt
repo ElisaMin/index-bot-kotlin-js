@@ -1,12 +1,10 @@
 package com.tgse.index.area
 
-import com.pengrad.telegrambot.model.request.ParseMode
 import com.pengrad.telegrambot.request.AnswerCallbackQuery
 import com.pengrad.telegrambot.request.SendMessage
 import com.tgse.index.area.execute.BlacklistExecute
 import com.tgse.index.area.execute.EnrollExecute
-import com.tgse.index.area.msgFactory.NormalMsgFactory
-import com.tgse.index.area.msgFactory.RecordMsgFactory
+import com.tgse.index.area.msgFactory.*
 import com.tgse.index.domain.repository.nick
 import com.tgse.index.domain.service.*
 import com.tgse.index.infrastructure.provider.BotProvider
@@ -137,7 +135,10 @@ class Approve(
                 val msg = recordMsgFactory.makeApproveResultMsg(approveGroupChatId, enroll, manager, isPassed)
                 val msgResponse = botProvider.send(msg)
                 if (isPassed) return@subscribe
-                val editMsg = normalMsgFactory.makeClearMarkupMsg(approveGroupChatId, msgResponse.message().messageId())
+                val editMsg = MessageFactories.cleanDirectsKeyboard(
+                    approveGroupChatId,
+                    msgResponse.message().messageId().toLong()
+                )
                 botProvider.sendDelay(editMsg, autoDeleteMsgCycle * 1000)
             },
             { throwable ->
@@ -228,7 +229,7 @@ class Approve(
                 val manager = request.update.callbackQuery().from()
                 val recordUUID = callbackData.replace("remove:", "")
                 recordService.deleteRecord(recordUUID, manager)
-                val msg = normalMsgFactory.makeClearMarkupMsg(request.chatId, request.messageId!!)
+                val msg = MessageFactories.cleanDirectsKeyboard(request.chatId, request.messageId!!.toLong())
                 botProvider.send(msg)
             }
         }
@@ -239,12 +240,9 @@ class Approve(
         val (userCount, dailyIncrease, dailyActive) = userService.statistics()
         val recordCount = recordService.count()
 
-        val msg = normalMsgFactory.makeStatisticsDailyReplyMsg(
+        val msg = MessageFactories.dailyMsg(
             approveGroupChatId,
-            dailyIncrease,
-            dailyActive,
-            userCount,
-            recordCount
+            dailyIncrease.toInt(), dailyActive.toInt(), userCount.toInt(), recordCount
         )
         botProvider.send(msg)
     }

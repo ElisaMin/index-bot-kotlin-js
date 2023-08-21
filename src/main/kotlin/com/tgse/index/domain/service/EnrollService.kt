@@ -1,12 +1,9 @@
 package com.tgse.index.domain.service
 
-import com.pengrad.telegrambot.model.User
+import com.github.kotlintelegrambot.entities.User
 import com.tgse.index.domain.repository.EnrollRepository
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import org.springframework.stereotype.Service
 
-@Service
+
 class EnrollService(
     private val enrollRepository: EnrollRepository
 ) {

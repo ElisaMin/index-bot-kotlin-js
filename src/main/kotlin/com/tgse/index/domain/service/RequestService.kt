@@ -1,22 +1,15 @@
 package com.tgse.index.domain.service
 
-import com.pengrad.telegrambot.model.Chat
-import com.pengrad.telegrambot.model.Update
-import com.pengrad.telegrambot.model.User
-import com.tgse.index.area.Group
+import com.github.kotlintelegrambot.entities.Chat
+import com.github.kotlintelegrambot.entities.Update
+import com.github.kotlintelegrambot.entities.User
 import com.tgse.index.domain.repository.BanListRepository
 import com.tgse.index.infrastructure.provider.BotProvider
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Service
 
 /**
  * 信息来源分水岭
  * 区分 群组、私聊、管理 信息来源
  */
-@Service
 class RequestService(
     private val banListRepository: BanListRepository,
     private val botProvider: BotProvider,
@@ -98,28 +91,28 @@ class RequestService(
 
     private fun makeBotRequest(update: Update): BotRequest? {
         // 仅处理文字信息或按钮回执
-        val messageContentIsNull = update.message() == null || update.message().text() == null
-        if (messageContentIsNull && update.callbackQuery() == null) return null
+        val messageContentIsNull = update.message?.text == null
+        if (messageContentIsNull && update.callbackQuery == null) return null
 
         // 获取概要内容
-        val callbackQuery = update.callbackQuery()
+        val callbackQuery = update.callbackQuery
 
         val chatType = when {
-            update.message() == null && callbackQuery == null -> null
-            update.message() != null -> update.message().chat().type()
-            callbackQuery != null -> callbackQuery.message().chat().type()
+            update.message == null && callbackQuery == null -> null
+            update.message != null -> update.message.chat.type
+            callbackQuery != null -> callbackQuery.message?.chat?.type
             else -> null
         }
 
         val chatId = when {
-            update.message() == null && callbackQuery == null -> null
-            callbackQuery?.message() != null -> callbackQuery.message().chat().id()
-            callbackQuery != null -> callbackQuery.from().id().toLong()
-            update.message() != null -> update.message().chat().id()
+            update.message == null && callbackQuery == null -> null
+            callbackQuery?.message != null -> callbackQuery.message.chat.id
+            callbackQuery != null -> callbackQuery.from.id
+            update.message != null -> update.message.chat.id
             else -> null
         }
 
-        val messageId = callbackQuery?.message()?.messageId()
+        val messageId = callbackQuery?.message?.messageId
 
         return when (chatType) {
             Chat.Type.Private -> BotPrivateRequest(chatId!!, messageId, update)

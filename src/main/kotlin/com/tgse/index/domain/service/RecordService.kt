@@ -1,14 +1,11 @@
 package com.tgse.index.domain.service
 
-import com.pengrad.telegrambot.model.User
+import com.github.kotlintelegrambot.entities.User
 import com.tgse.index.domain.repository.RecordRepository
 import com.tgse.index.domain.repository.TelegramRepository
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import org.springframework.stereotype.Service
-import java.util.*
+import kotlin.js.Date
 
-@Service
+
 class RecordService(
     private val recordRepository: RecordRepository,
     private val telegramRepository: TelegramRepository
@@ -32,7 +29,7 @@ class RecordService(
         val members: Long?,
         val createTime: Long,
         val createUser: Long,
-        val updateTime: Long,
+        val updateTime: Double,
     )
 
     private val updateRecordSubject = BehaviorSubject.create<Record>()
@@ -66,7 +63,7 @@ class RecordService(
     }
 
     fun updateRecord(record: Record) {
-        val newRecord = record.copy(updateTime = Date().time)
+        val newRecord = record.copy(updateTime = Date().getTime())
         recordRepository.updateRecord(newRecord)
         updateRecordSubject.onNext(newRecord)
     }

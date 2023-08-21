@@ -24,4 +24,8 @@ data class Chat(
     val can_set_sticker_set: Boolean? = null,
     val linked_chat_id: Long? = null,
     val location: ChatLocation? = null,
-)
+) {
+    val typeEnum: InlineQuery.ChatType by lazy {
+        InlineQuery.ChatType.valueOf(type.uppercase())
+    }
+}

@@ -1,6 +1,6 @@
 package com.tgse.index.infrastructure.repository
 
-import com.pengrad.telegrambot.model.User
+import com.github.kotlintelegrambot.entities.User
 import com.tgse.index.domain.repository.RecordRepository
 import com.tgse.index.domain.service.RecordService
 import com.tgse.index.domain.service.TelegramService

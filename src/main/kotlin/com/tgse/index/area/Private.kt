@@ -1,15 +1,12 @@
 package com.tgse.index.area
 
-import com.pengrad.telegrambot.model.User
-import com.pengrad.telegrambot.model.request.ParseMode
+import com.github.kotlintelegrambot.entities.User
+import com.github.kotlintelegrambot.entities.request.ParseMode
 import com.pengrad.telegrambot.request.*
 import com.tgse.index.area.execute.BlacklistExecute
 import com.tgse.index.area.execute.EnrollExecute
 import com.tgse.index.area.execute.RecordExecute
-import com.tgse.index.area.msgFactory.ListMsgFactory
-import com.tgse.index.area.msgFactory.MineMsgFactory
-import com.tgse.index.area.msgFactory.NormalMsgFactory
-import com.tgse.index.area.msgFactory.RecordMsgFactory
+import com.tgse.index.area.msgFactory.*
 import com.tgse.index.infrastructure.provider.BotProvider
 import com.tgse.index.domain.repository.nick
 import com.tgse.index.domain.service.*
@@ -46,7 +43,7 @@ class Private(
         subscribeApprove()
     }
 
-    private fun subscribeUpdate() {
+    private suspend fun subscribeUpdate() {
         requestService.requestObservable.subscribe(
             { request ->
                 try {
@@ -117,7 +114,7 @@ class Private(
     }
 
     private fun executeByText(request: RequestService.BotPrivateRequest) {
-        val keywords = request.update.message().text()
+        val keywords = request.update.message.text()
         val msg = listMsgFactory.makeListFirstPageMsg(request.chatId, keywords, 1) ?: normalMsgFactory.makeReplyMsg(
             request.chatId,
             "nothing"
@@ -129,13 +126,13 @@ class Private(
         // 人员黑名单检测
         val userBlack = blackListService.get(request.chatId)
         if (userBlack != null) {
-            val user = request.update.message().from()
-            val telegramPerson = TelegramService.TelegramPerson(request.chatId, user.username(), user.nick(), null)
+            val user = request.update.message!!.from!!
+            val telegramPerson = TelegramService.TelegramPerson(request.chatId, user.username, user.nick(), null)
             blacklistExecute.notify(request.chatId, telegramPerson)
             return
         }
         // 获取收录内容
-        val username = request.update.message().text().replaceFirst("@", "").replaceFirst("https://t.me/", "")
+        val username = request.update.message.text().replaceFirst("@", "").replaceFirst("https://t.me/", "")
         val telegramMod = telegramService.getTelegramMod(username)
         // 收录对象黑名单检测
         val recordBlack = blackListService.get(username)
@@ -170,7 +167,7 @@ class Private(
                     telegramMod.members,
                     Date().time,
                     request.chatId,
-                    request.update.message().from().nick(),
+                    request.update.message.from().nick(),
                     false,
                     null
                 )
@@ -192,7 +189,7 @@ class Private(
                     null,
                     Date().time,
                     request.chatId,
-                    request.update.message().from().nick(),
+                    request.update.message.from().nick(),
                     false,
                     null
                 )
@@ -207,17 +204,17 @@ class Private(
         botProvider.send(sendMessage)
     }
 
-    private fun executeByCommand(request: RequestService.BotPrivateRequest) {
+    suspend fun executeByCommand(request: RequestService.BotPrivateRequest) {
         // 获取命令内容
-        val cmd = request.update.message().text().replaceFirst("/", "").replace("@${botProvider.username}", "")
+        val cmd = request.update.message.text().replaceFirst("/", "").replace("@${botProvider.username}", "")
         // 回执
         val sendMessage = when {
-            cmd == "start" -> normalMsgFactory.makeStartMsg(request.chatId)
-            cmd.startsWith("start ") -> executeBySuperCommand(request)
-            cmd == "enroll" -> normalMsgFactory.makeReplyMsg(request.chatId, cmd)
-            cmd == "update" || cmd == "mine" -> mineMsgFactory.makeListFirstPageMsg(request.update.message().from())
-            cmd == "setting" -> normalMsgFactory.makeReplyMsg(request.chatId, "only-group")
-            cmd == "help" -> normalMsgFactory.makeReplyMsg(request.chatId, "help-private")
+//            cmd == "start" -> MessageFactories.startMsg(request.chatId)
+//            cmd.startsWith("start ") -> executeBySuperCommand(request)
+//            cmd == "enroll" -> normalMsgFactory.makeReplyMsg(request.chatId, cmd)
+            cmd == "update" || cmd == "mine" -> mineMsgFactory.makeListFirstPageMsg(request.update.message.from())
+//            cmd == "setting" -> normalMsgFactory.makeReplyMsg(request.chatId, "only-group")
+//            cmd == "help" -> normalMsgFactory.makeReplyMsg(request.chatId, "help-private")
             cmd == "cancel" -> {
                 awaitStatusService.clearAwaitStatus(request.chatId)
                 normalMsgFactory.makeReplyMsg(request.chatId, "cancel")
@@ -231,7 +228,7 @@ class Private(
 
     private fun executeBySuperCommand(request: RequestService.BotPrivateRequest): SendMessage {
         return try {
-            val recordUUID = request.update.message().text().replaceFirst("/start ", "")
+            val recordUUID = request.update.message.text().replaceFirst("/start ", "")
             val record = recordService.getRecord(recordUUID)!!
             recordMsgFactory.makeRecordMsg(request.chatId, record)
         } catch (e: Throwable) {
@@ -278,8 +275,8 @@ class Private(
             statusCallbackData.startsWith("feedback:") -> {
                 val recordUUID = statusCallbackData.replace("feedback:", "")
                 val record = recordService.getRecord(recordUUID)!!
-                val user = request.update.message().from()
-                val content = request.update.message().text()
+                val user = request.update.message.from()
+                val content = request.update.message.text()
                 val feedback = Triple(record, user, content)
                 requestService.feedbackSubject.onNext(feedback)
                 // 清除状态

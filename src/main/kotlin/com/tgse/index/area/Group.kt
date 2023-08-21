@@ -1,21 +1,13 @@
 package com.tgse.index.area
 
-import com.pengrad.telegrambot.model.User
-import com.pengrad.telegrambot.model.request.ParseMode
-import com.pengrad.telegrambot.request.AnswerCallbackQuery
-import com.pengrad.telegrambot.request.GetChatAdministrators
-import com.pengrad.telegrambot.request.SendMessage
+import com.github.kotlintelegrambot.entities.*
+
 import com.tgse.index.area.execute.BlacklistExecute
 import com.tgse.index.area.msgFactory.NormalMsgFactory
 import com.tgse.index.area.msgFactory.RecordMsgFactory
 import com.tgse.index.domain.repository.nick
 import com.tgse.index.infrastructure.provider.BotProvider
 import com.tgse.index.domain.service.*
-import org.slf4j.LoggerFactory
-import org.springframework.stereotype.Service
-import java.lang.RuntimeException
-import java.util.*
-
 @Service
 class Group(
     private val botProvider: BotProvider,
@@ -77,7 +69,7 @@ class Group(
 
     private fun executeByCommand(request: RequestService.BotGroupRequest) {
         // 获取命令内容
-        val cmd = request.update.message().text().replaceFirst("/", "").replace("@${botProvider.username}", "")
+        val cmd = request.update.message.text().replaceFirst("/", "").replace("@${botProvider.username}", "")
         // 回执
         val sendMessage = when (cmd) {
             "start" -> normalMsgFactory.makeReplyMsg(request.chatId, "only-private")
@@ -112,7 +104,7 @@ class Group(
         // 校验bot权限
         if (!checkMyAuthority(request.chatId))
             return normalMsgFactory.makeReplyMsg(request.chatId, "group-bot-authority")
-        val user = request.update.message().from()
+        val user = request.update.message.from()
         // 校验匿名管理员
         if (user.username() == "GroupAnonymousBot")
             return normalMsgFactory.makeReplyMsg(request.chatId, "group-anonymous-authority")
@@ -172,7 +164,7 @@ class Group(
         // 校验bot权限
         if (!checkMyAuthority(request.chatId))
             return normalMsgFactory.makeReplyMsg(request.chatId, "group-bot-authority")
-        val user = request.update.message().from()
+        val user = request.update.message.from()
         // 校验匿名管理员
         if (user.username() == "GroupAnonymousBot")
             return normalMsgFactory.makeReplyMsg(request.chatId, "group-anonymous-authority")
@@ -182,13 +174,16 @@ class Group(
         // 校验权限
         val record = recordService.getRecordByChatId(request.chatId)
         if (record == null) return normalMsgFactory.makeReplyMsg(request.chatId, "group-not-enroll")
-        if (record.createUser != user.id().toLong()) return normalMsgFactory.makeReplyMsg(request.chatId, "group-enroller-fail")
+        if (record.createUser != user.id().toLong()) return normalMsgFactory.makeReplyMsg(
+            request.chatId,
+            "group-enroller-fail"
+        )
         // 更新
         val telegramGroup = telegramService.getTelegramMod(request.chatId) ?: throw RuntimeException("群组信息获取失败")
-        val newRecord = record.copy(username = telegramGroup.username,link = telegramGroup.link)
+        val newRecord = record.copy(username = telegramGroup.username, link = telegramGroup.link)
         recordService.updateRecord(newRecord)
         // 回执
-        val msg = recordMsgFactory.makeRecordMsg(newRecord.createUser,newRecord)
+        val msg = recordMsgFactory.makeRecordMsg(newRecord.createUser, newRecord)
         botProvider.send(msg)
         return normalMsgFactory.makeReplyMsg(request.chatId, "pls-check-private")
     }

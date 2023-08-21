@@ -1,7 +1,7 @@
 package com.tgse.index.infrastructure.repository
 
 import com.pengrad.telegrambot.TelegramBot
-import com.pengrad.telegrambot.model.Chat
+import com.github.kotlintelegrambot.entities.Chat
 import com.pengrad.telegrambot.request.GetChat
 import com.pengrad.telegrambot.request.GetChatMemberCount
 import com.tgse.index.ProxyProperties

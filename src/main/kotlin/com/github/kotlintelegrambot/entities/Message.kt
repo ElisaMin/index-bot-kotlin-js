@@ -55,4 +55,6 @@ data class Message(
     val successful_payment: SuccessfulPayment? = null,
     val reply_markup: InlineKeyboardMarkup? = null,
     val proximity_alert_triggered: ProximityAlertTriggered? = null,
-)
+) {
+    inline val messageId: Long? get() = message_id
+}
