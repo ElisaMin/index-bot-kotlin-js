@@ -26,9 +26,23 @@ suspend fun UpdateHandlerScope.handleCommands() {
         }
     }
     "setting" isaCommandFor {
-        privateChat {
-
-        }
-        disableRest("but",)
+        disableRest(but = "group")
     }
+    "cancel" isaCommandFor {
+        privateChat {
+            TODO("await-state")
+        }
+    }
+    "update" isaCommandFor {
+        privateChat {
+            TODO("await-state")
+        }
+
+    }
+    "mine" isaCommandFor {
+       privateChat {
+           TODO("await-state")
+       }
+    }
+
 }

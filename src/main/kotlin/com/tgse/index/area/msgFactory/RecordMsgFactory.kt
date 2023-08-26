@@ -145,8 +145,8 @@ class RecordMsgFactory(
                 InlineKeyboardButton("移除").callbackData("remove:$recordUUID")
             )
         )
-    }
 
+    }
     private fun makeJoinBlacklistKeyboardMarkup(enroll: EnrollService.Enroll): InlineKeyboardMarkup {
         val type = when (enroll.type) {
             TelegramService.TelegramModType.Channel -> "频道"

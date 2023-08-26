@@ -16,6 +16,7 @@ private data object DefaultReplies:CustomReplies {
     override val updateTitle: String = "更新标题"
     override val updateAbout: String = "更新关于"
     override val updateTags: String = "更新标签"
+    override val updateCategory: String = "更新分类"
     override val enrollSubmitVerifyClassification: String = "提交审核分类"
     override val enrollSubmit: String = "提交审核"
     override val enrollSucceeded: String = "加入成功"
@@ -49,6 +50,8 @@ private data object DefaultReplies:CustomReplies {
     override val empty: String = "空"
     override val error: String = "错误"
     override val await: String = "等待"
+    override val awaitFailed = "请求超过十五分钟或者已经提交过了"
+    override val updateCategorySuccess: String = "分类更新成功: {{category}}"
 
 }
 
@@ -69,11 +72,14 @@ interface CustomReplies {
     val groupEnrollerFail:String?
     val enroll:String?
     val enrollNeedJoinGroup:String?
+
     val updateLink:String?
     val updateLinkGroup:String?
     val updateTitle:String?
     val updateAbout:String?
     val updateTags:String?
+    val updateCategory:String? //new
+
     val enrollSubmitVerifyClassification:String?
     val enrollSubmit:String?
     val enrollSucceeded:String?
@@ -107,4 +113,7 @@ interface CustomReplies {
     val empty:String?
     val error:String?
     val await:String?
+    val awaitFailed: String?
+
+    val updateCategorySuccess:String?
 }

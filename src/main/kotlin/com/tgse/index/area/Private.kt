@@ -57,12 +57,12 @@ class Private(
                         awaitStatusService.getAwaitStatus(request.chatId) != null -> {
                             try {
                                 val callbackData = awaitStatusService.getAwaitStatus(request.chatId)!!.callbackData
-                                if (callbackData.startsWith("approve") || callbackData.startsWith("enroll"))
-                                    enrollExecute.executeByStatus(EnrollExecute.Type.Enroll, request)
-                                else if (callbackData.startsWith("update"))
-                                    recordExecute.executeByStatus(request)
-                                else
-                                    executeByStatus(EnrollExecute.Type.Enroll, request)
+                                when {
+                                    callbackData.startsWith("approve") || callbackData.startsWith("enroll") -> enrollExecute.executeByStatus(EnrollExecute.Type.Enroll, request)
+                                    callbackData.startsWith("update") -> recordExecute.executeByStatus(request)
+                                    callbackData.startsWith("feedback:") -> executeByStatus(EnrollExecute.Type.Enroll, request)
+                                    else -> executeByStatus(EnrollExecute.Type.Enroll, request)
+                                }
                             } catch (e: Throwable) {
                                 awaitStatusService.clearAwaitStatus(request.chatId)
                             }
@@ -240,7 +240,7 @@ class Private(
         val answer = AnswerCallbackQuery(request.update.callbackQuery().id())
         botProvider.send(answer)
 
-        val callbackData = request.update.callbackQuery().data()
+        val callbackData = request.update.callbackQuery!!.data
         when {
             callbackData.startsWith("enroll") || callbackData.startsWith("enroll-class") -> {
                 enrollExecute.executeByEnrollButton(EnrollExecute.Type.Enroll, request)
@@ -275,8 +275,8 @@ class Private(
             statusCallbackData.startsWith("feedback:") -> {
                 val recordUUID = statusCallbackData.replace("feedback:", "")
                 val record = recordService.getRecord(recordUUID)!!
-                val user = request.update.message.from()
-                val content = request.update.message.text()
+                val user = request.update.message.from
+                val content = request.update.message.text
                 val feedback = Triple(record, user, content)
                 requestService.feedbackSubject.onNext(feedback)
                 // 清除状态
