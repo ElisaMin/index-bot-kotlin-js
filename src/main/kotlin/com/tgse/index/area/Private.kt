@@ -132,7 +132,7 @@ class Private(
             return
         }
         // 获取收录内容
-        val username = request.update.message.text().replaceFirst("@", "").replaceFirst("https://t.me/", "")
+        val username = request.update.message.text.replaceFirst("@", "").replaceFirst("https://t.me/", "")
         val telegramMod = telegramService.getTelegramMod(username)
         // 收录对象黑名单检测
         val recordBlack = blackListService.get(username)

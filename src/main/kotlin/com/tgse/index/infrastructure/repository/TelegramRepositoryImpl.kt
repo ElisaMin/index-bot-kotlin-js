@@ -2,6 +2,7 @@ package com.tgse.index.infrastructure.repository
 
 import com.pengrad.telegrambot.TelegramBot
 import com.github.kotlintelegrambot.entities.Chat
+import com.github.kotlintelegrambot.network.GetChat
 import com.pengrad.telegrambot.request.GetChat
 import com.pengrad.telegrambot.request.GetChatMemberCount
 import com.tgse.index.ProxyProperties
@@ -111,7 +112,7 @@ class TelegramRepositoryImpl(
     override fun getTelegramMod(id: Long): TelegramService.TelegramGroup? {
         return try {
             val getChat = GetChat(id)
-            val chat = botProvider.send(getChat).chat() ?: return null
+            val chat = botProvider.send(getChat).chat ?: return null
 
             val getChatMembersCount = GetChatMemberCount(id)
             val count = botProvider.send(getChatMembersCount).count()

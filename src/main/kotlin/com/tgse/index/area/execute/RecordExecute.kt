@@ -80,14 +80,14 @@ class RecordExecute(
         val callbackDataVal = statusCallbackData.replace("update:", "").split("&")
         val field = callbackDataVal[0]
         val uuid = callbackDataVal[1]
-        val msgContent = request.update.message.text()
+        val msgContent = request.update.message.text
         try {
             val record = recordService.getRecord(uuid)!!
             val newRecord = when (field) {
                 "link" -> {
                     // 获取收录内容
                     val username =
-                        request.update.message.text().replaceFirst("@", "").replaceFirst("https://t.me/", "")
+                        request.update.message.text.replaceFirst("@", "").replaceFirst("https://t.me/", "")
                     if (record.username == username) throw MismatchException("链接未发生改变")
                     val telegramMod = telegramService.getTelegramMod(username)
                     // 收录对象黑名单检测

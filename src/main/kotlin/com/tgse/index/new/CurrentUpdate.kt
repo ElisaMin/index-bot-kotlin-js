@@ -24,12 +24,11 @@ interface FunctionContext {
     val chatId:Long
     val chatType:InlineQuery.ChatType
     val api:BotApiProvider
+    val isForReviewers:Boolean
 }
 context(FunctionContext)
 suspend inline fun KProperty1<CustomReplies, String?>.send() = api.execute(
-    SendMessage(
-        chatId,
-        CustomReplies[this])
+    SendMessage(chatId, CustomReplies[this])
 )
 
 @Suppress("NOTHING_TO_INLINE")
@@ -102,7 +101,9 @@ interface CallbackScope {
     fun param():String?
 }
 interface CallbackContext:CallbackScope,FunctionContext {
-    suspend fun anserCallback()
+    val messageId:Long
+    val callbackId:String
+    suspend fun answerCallback()
 }
 interface ReplyScope {
     val data:String?
@@ -133,6 +134,9 @@ data object CurrentUpdate:FunctionContext {
     override lateinit var chatType: InlineQuery.ChatType private set;
     override val api: BotApiProvider
         get() = TODO("Not yet implemented")
+    override val isForReviewers: Boolean
+        get() = TODO("Not yet implemented")
+
     operator fun invoke(update: Update) {
 
         require(update.isMessageOrCallback) {

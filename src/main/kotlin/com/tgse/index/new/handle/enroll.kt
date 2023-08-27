@@ -3,12 +3,13 @@ package com.tgse.index.new.handle
 import com.github.kotlintelegrambot.entities.ReplyMarkup
 import com.github.kotlintelegrambot.network.EditMessageText
 
+val Enrol.link get() = "https://t.me/${linkableName}"
 
 sealed interface Enrol {
     val uuid:String
     //base information of a telegram chat
-    val joinLink: String? // https://t.me/joinchat/xxxxx
-    val linkableName: String? //@xxx but @
+//    val joinLink: String? // https://t.me/joinchat/xxxxx
+    val linkableName: String //@xxx but @
     val chatId: Long?
     val type:String //(supergroup,group),channel,bot
     val title: String
@@ -27,7 +28,7 @@ sealed interface Enrol {
     //reviewer infos
     val reviewerId: Long?
     val reviewerUsername:String?
-    val reviewerFullrname:String?
+    val reviewerFullname:String?
     val lastUpdate: Long
 
     interface TempEnrol:Enrol {
