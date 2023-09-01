@@ -1,13 +1,13 @@
 package com.tgse.index.area.msgFactory
 
-import com.pengrad.telegrambot.request.SendMessage
+import com.github.kotlintelegrambot.network.*
 import com.tgse.index.infrastructure.provider.BotProvider
 import com.tgse.index.domain.service.EnrollService
 import com.tgse.index.domain.service.RecordService
 import com.tgse.index.domain.service.ReplyService
 import com.tgse.index.domain.service.TelegramService
-import java.math.RoundingMode
-import java.text.DecimalFormat
+
+typealias StringBuffer = StringBuilder
 
 abstract class BaseMsgFactory(
     protected open val replyService: ReplyService,

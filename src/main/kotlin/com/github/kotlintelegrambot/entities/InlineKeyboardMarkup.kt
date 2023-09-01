@@ -11,6 +11,7 @@ data class InlineKeyboardMarkup internal constructor(
     val inline_keyboard: List<List<InlineKeyboardButton>>,
 ) : ReplyMarkup {
 
+    constructor(vararg rows:Array<InlineKeyboardButton>):this(rows.toList().map { it.toList() })
     init {
         validatePriorityButtonsForType<InlineKeyboardButton.Pay>()
         validatePriorityButtonsForType<InlineKeyboardButton.CallbackGameButtonType>()

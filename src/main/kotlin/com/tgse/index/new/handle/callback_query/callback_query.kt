@@ -19,38 +19,6 @@ import me.heizi.workers.bot.index.CustomReplies
 import me.heizi.workers.bot.index.contextGlobal
 import kotlin.js.Date
 
-
-object db {
-    suspend fun updateLastMessageId(uuid: String, it: Long) {
-        TODO()
-    }
-    suspend fun updateAwaitTimeout(chatId: Long, noticeMsgId: Long) {
-        TODO()
-    }
-    suspend fun findEnrolByUUID(uuid: String): Enrol? {
-        TODO()
-    }
-
-    fun categories(): Array<String> {
-        TODO("Not yet implemented")
-    }
-
-    fun getTimeout(chatId: Long?, messageId: Long): Long? {
-        TODO("Not yet implemented")
-    }
-
-    suspend fun updateEnrol(enrol: Enrol) {
-        TODO("Not yet implemented")
-    }
-
-}
-interface AwaitInfo {
-    val chatId:Long
-    val messageId:Long
-    val callbackData:String
-    val timeout:Long?
-}
-
 object CallbackKeys {
     //header
     const val enrol = "nrl"
@@ -190,28 +158,21 @@ private fun String.tags(): Collection<String>? {
     TODO()
 }
 
-private fun Enrol.copy(
-    title: String = this.title,
-    linkableName: String = this.linkableName,
-    description: String? = this.description,
-    category: String? = this.category,
-    tags: Collection<String>? = this.tags,
-    reviewerFullname: String? = this.reviewerFullname,
-    reviewerUsername: String? = this.reviewerUsername,
-    reviewerId:Long? = this.reviewerId,
-    lastUpdate: Long = Date.now().toLong(),
-    isPassed: Boolean = (this as? TempEnrol)?.isPassed ?: false,
-    hasSent: Boolean = (this as? TempEnrol)?.hasSent ?: true
-): Enrol = TODO()
 
 context(ReplyForUpdateContext)
-fun ReplyScope.isReplyTimeoutOrHasEdit():Boolean {
+suspend fun ReplyScope.isReplyTimeoutOrHasEdit():Boolean {
     db.getTimeout(chatId,idReplyTo)?.let { timeout ->
         if (timeout<Date.now()) {
             return true
         }
     }
-    return hasEdit
+    dateReplyTo.let {
+        val timeout = it+1000*60*15
+        if (timeout<Date.now()) {
+            return true
+        }
+    }
+    return editDateReplyTo!=null
 }
 
 context(ReplyForUpdateContext)
@@ -268,6 +229,7 @@ private fun Enrol.reviewable(): Enrol = copy(
     hasSent = false
 )
 
+context (FunctionContext)
 suspend fun Enrol.checkUpdateFailedReason(checkLink: Boolean = false):RecordPreCheckResult {
     var new = this
     if (checkLink) {
@@ -296,7 +258,7 @@ fun Enrol.buildReplyMessage(
     editing: Boolean = true,
     forReviewers: Boolean = false,
     reopen: Boolean = false,
-) = buildTelegramMessage(chatId,editMessageId) {
+) = buildEditMessage(chatId,editMessageId) {
     line(subtitle("标题",link(title,link)))
     line(subtitle("标签",tags?.takeIf { it.isNotEmpty() }?.joinToString(" ") ?: "暂无"))
     line(subtitle("分类",category ?: "暂无"))

@@ -114,7 +114,7 @@ class Private(
     }
 
     private fun executeByText(request: RequestService.BotPrivateRequest) {
-        val keywords = request.update.message.text()
+        val keywords = request.update.message.text
         val msg = listMsgFactory.makeListFirstPageMsg(request.chatId, keywords, 1) ?: normalMsgFactory.makeReplyMsg(
             request.chatId,
             "nothing"
@@ -206,11 +206,11 @@ class Private(
 
     suspend fun executeByCommand(request: RequestService.BotPrivateRequest) {
         // 获取命令内容
-        val cmd = request.update.message.text().replaceFirst("/", "").replace("@${botProvider.username}", "")
+        val cmd = request.update.message.text.replaceFirst("/", "").replace("@${botProvider.username}", "")
         // 回执
         val sendMessage = when {
 //            cmd == "start" -> MessageFactories.startMsg(request.chatId)
-//            cmd.startsWith("start ") -> executeBySuperCommand(request)
+            cmd.startsWith("start ") -> executeBySuperCommand(request)
 //            cmd == "enroll" -> normalMsgFactory.makeReplyMsg(request.chatId, cmd)
             cmd == "update" || cmd == "mine" -> mineMsgFactory.makeListFirstPageMsg(request.update.message.from())
 //            cmd == "setting" -> normalMsgFactory.makeReplyMsg(request.chatId, "only-group")
@@ -228,7 +228,7 @@ class Private(
 
     private fun executeBySuperCommand(request: RequestService.BotPrivateRequest): SendMessage {
         return try {
-            val recordUUID = request.update.message.text().replaceFirst("/start ", "")
+            val recordUUID = request.update.message.text.replaceFirst("/start ", "")
             val record = recordService.getRecord(recordUUID)!!
             recordMsgFactory.makeRecordMsg(request.chatId, record)
         } catch (e: Throwable) {

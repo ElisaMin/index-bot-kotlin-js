@@ -37,7 +37,6 @@ suspend fun UpdateHandlerScope.handleCommands() {
         privateChat {
             TODO("await-state")
         }
-
     }
     "mine" isaCommandFor {
        privateChat {

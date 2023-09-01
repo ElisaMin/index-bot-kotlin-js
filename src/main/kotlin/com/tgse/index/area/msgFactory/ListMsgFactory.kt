@@ -1,17 +1,14 @@
 package com.tgse.index.area.msgFactory
 
-import com.github.kotlintelegrambot.entities.request.InlineKeyboardButton
-import com.github.kotlintelegrambot.entities.request.InlineKeyboardMarkup
-import com.github.kotlintelegrambot.entities.request.ParseMode
-import com.pengrad.telegrambot.request.EditMessageText
-import com.pengrad.telegrambot.request.SendMessage
-import com.tgse.index.infrastructure.provider.BotProvider
+import com.github.kotlintelegrambot.entities.*
+import com.github.kotlintelegrambot.entities.keyboard.InlineKeyboardButton
+import com.github.kotlintelegrambot.network.*
 import com.tgse.index.domain.service.ClassificationService
 import com.tgse.index.domain.service.RecordService
 import com.tgse.index.domain.service.ReplyService
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Component
-import java.util.*
+import com.tgse.index.infrastructure.provider.BotProvider
+import kotlin.jvm.Synchronized
+
 
 @Component
 class ListMsgFactory(
